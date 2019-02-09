@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "start": "nodemon server.js",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -15,11 +16,16 @@
     "@fortawesome/vue-fontawesome": "^0.1.5",
     "animate.css": "^3.7.0",
     "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.11",
     "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "nodemailer": "^5.1.1",
     "vee-validate": "^2.1.7",
     "vue": "^2.5.22",
     "vue-router": "^3.0.1",
@@ -36,6 +42,7 @@
     "chai": "^4.1.2",
     "eslint": "^5.13.0",
     "node-sass": "^4.9.0",
+    "nodemon": "^1.18.10",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
