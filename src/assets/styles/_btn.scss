@@ -1,0 +1,97 @@
+@import 'colors';
+
+.btn {
+	outline: none;
+	min-height: 36px;
+	padding: 10px;
+	border: medium none;
+	font-size: 14px;
+	font-weight: 600;
+	text-transform: uppercase;
+	cursor: pointer;
+	border-radius: 3px;
+	box-shadow: 0px 1px 5px rgba(0, 0, 0, .3);
+
+	& > a, span {
+		text-decoration: none;
+		font-size: 14px;
+		font-weight: 600;
+		text-transform: uppercase;
+		color: white;
+	}
+
+	&.wide {
+		display: block;
+		text-align: center;
+		width: 100%;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		
+	}
+
+	&:active {
+		transform: scale(.95);
+	}
+
+	&.primary {
+		background-color: $primary;
+		color: white;
+	}
+
+	&.primary:hover {
+		background-color: darken($primary, 5%);
+		transition: .3s ease-in-out;
+	}
+
+	&.cus-green {
+		background-color: $cus-green;
+		color: white;
+	}
+
+	&.cus-green:hover {
+		background-color: darken($cus-green, 5%);
+		transition: .3s ease-in-out;
+	}
+
+	&.red {
+		background-color: red;
+		color: white;
+	}
+
+	&.red:hover {
+		background-color: darken(red, 10%);
+		transition: .3s ease-in-out;
+	}
+
+	&.secondary {
+		color: $dark;
+		background-color: $secondary;
+	}
+
+	&.secondary:hover {
+		background-color: darken($secondary, 10%);
+		transition: .3s ease-in-out;
+	}
+}
+
+.filter-btn {
+	text-align: center;
+	padding: 5px;
+	margin: 0 2px;
+	font-size: 12px;
+	color: $dark;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: 3px;
+
+	&:hover {
+		border-color: $cus-green;
+		transition: .3s ease-in;
+	}
+
+	&.active {
+		border-color: $cus-green;
+	}
+}

@@ -4,13 +4,33 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
+    state: {
+		user: JSON.parse(localStorage.getItem('user')) || null
+	},
+	getters: {
+		loggedIn (state) {
+			return state.user !== null
+		},
+		avatar (state) {
+			if(state.user) {
+				return state.user.avatar || null
+			}
+		}
+	},
+	mutations: {
+		setSession(state, data) {
+			state.user = data
+        }
+	},
+	actions: {
+		setSession(context, credentials) {
+			localStorage.setItem('user', JSON.stringify(credentials))
+			context.commit('setSession', credentials)
+		},
 
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  }
+		unsetSession(context) {
+			localStorage.removeItem('user')
+			context.commit('setSession', null)
+		}
+	}
 })

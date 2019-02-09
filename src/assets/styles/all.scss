@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css?family=Play');
+
+* {
+    font-family: 'Play', 'Helvetica', sans-serif;
+    box-sizing: border-box;
+}
+  
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../glenn-carstens-peters-190592-unsplash.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: repeat;
+}
+  
+@import 'colors';
+@import 'auth';
+@import 'backdrop';
+@import 'btn';
+@import 'error';
+@import 'form';
+@import 'hint';
+@import 'icon';
+@import 'input';
+@import 'props';
+@import 'search';
+@import 'share';
+@import 'spinner';
+@import 'todo';
+
+#deleteComp {
+    animation: fadeIn .5s ease-in;
+    -webkit-animation: fadeIn .5s ease-in;
+    -moz-animation: fadeIn .5s ease-in;
+    -o-animation: fadeIn .5s ease-in;
+}
+
+.important {
+    color: crimson;
+    font-weight: 600;
+    text-decoration: underline;
+    transition: .3s linear;  
+}
+  
+.completed {
+    text-decoration: line-through;
+    color: green;
+    opacity: .3;
+    transition: .3s linear;  
+}
+
+#currency {
+    padding: 0 5px;
+    text-align: right;
+
+    & > div {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    & > div:first-child {
+        text-transform: none;
+        font-size: 12px;
+        font-weight: normal;
+        margin-right: 10px;
+    }
+
+    i {
+        font-size: 14px;
+        margin-right: 2px;
+    }
+}
+
+#avatar {
+    display: flex;
+    align-items: center;
+
+    & > div:first-child {
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid black;
+        border-radius: 45px;
+        margin-right: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+    }
+
+    & > div:first-child:hover {
+        opacity: .7;
+        transition: all .3s ease-in;
+    }
+
+    & > div > img {
+        width: 55px;
+        height: 55px;
+    }
+
+    input {
+        opacity: 0;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        width: 55px;
+        height: 55px;
+    }
+
+    label {
+        font-size: 20px;
+        color: $cus-green;
+        position: absolute;
+        cursor: pointer;
+    }
+
+    button {
+        margin: 0 5px;
+    }
+}
