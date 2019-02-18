@@ -1,5 +1,19 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+    <div>
+        <app-header />
+        <todo />
+    </div>
 </template>
+
+<script>
+import Todo from '@/components/Todo/Index.vue'
+import AppHeader from '@/components/AppHeader.vue'
+
+export default {
+    name: 'main-page',
+    components: {
+        Todo,
+        AppHeader
+    }
+}
+</script>

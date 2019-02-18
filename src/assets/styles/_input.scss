@@ -90,7 +90,7 @@
 		-o-appearance: none;
 		width: 20px;
 		height: 20px;
-		border: 1px solid $cus-green;
+		border: 1px solid #527a7a;
 		border-radius: 3px; 
 		margin-right: 5px;
 		cursor: pointer;
@@ -98,7 +98,7 @@
 	}
 	
 	input[type="checkbox"]:checked {
-		background-color: $cus-green;
+		background-color: #527a7a;
 	}
 
 	span:after {
@@ -112,7 +112,58 @@
 	}
 
 	span:after {
-	    left: 9px;
+	    left: 10px;
+	    top: 5px;
+	    width: 5px;
+	    height: 10px;
+	    border: solid white;
+	    border-width: 0 3px 3px 0;
+	    -webkit-transform: rotate(45deg);
+	    -moz-transform: rotate(45deg);
+	    -o-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	    transform: rotate(45deg);
+	}
+}
+
+.input-checkbox.light {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	padding: 1px;
+	font-size: 14px;
+
+	input[type="checkbox"] {
+		appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-o-appearance: none;
+		width: 20px;
+		height: 20px;
+		border: 1px solid $light;
+		border-radius: 3px; 
+		margin-right: 5px;
+		cursor: pointer;
+		outline: none;
+	}
+	
+	input[type="checkbox"]:checked {
+		background-color: $light;
+	}
+
+	span:after {
+	    content: "";
+	    position: absolute;
+	    display: none;
+	}
+
+	input[type="checkbox"]:checked ~ span:after {
+	    display: block;
+	}
+
+	span:after {
+	    left: 10px;
 	    top: 5px;
 	    width: 5px;
 	    height: 10px;

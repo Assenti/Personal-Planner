@@ -1,0 +1,20 @@
+@import 'colors';
+
+.dropdown-group {
+
+}
+
+.dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: $light;
+    white-space: nowrap;
+    z-index: 11;
+
+    & > li {
+        list-style: none;
+        padding: 10px;
+        font-size: 1em;
+    }
+}

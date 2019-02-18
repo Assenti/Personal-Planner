@@ -1,0 +1,266 @@
+<template>
+    <div class="todo">
+        <div class="todo-side">
+            <topnav :todos="todos" @chosen="chooseTodo" @searched="setFilter" />
+            <v-calendar class="calendar" :attributes='attrs' />
+        </div>
+
+      <div class="todo-side"> 
+            
+            <div class="error" v-if="error">{{ error }}</div>
+            <todo-search />
+            <div class="todo-content">
+                <fa icon="clipboard-list" v-if="todos.length == 0" />
+                <item v-for="(todo, index) in todosFiltered"
+                    :key="todo._id" 
+                    :todo="todo" 
+                    :index="index"
+                    :chosenTodoId="chosenTodoId"
+                    @unchosen="unchooseTodo"
+                    @removedTodo="removeTodo"
+                    @finishedEdit="finishedEdit"
+                    :checkAll="!anyRemaining" />
+                            
+                <div class="hint" v-if="todos.length > 0">Double click on item to edit it</div>
+            </div>
+
+            <total :anyRemaining="anyRemaining" 
+                :remaining="remaining"
+                :isCompletedExists="isCompletedExists"
+                :filter="filter"
+                @filtered="setFilter"
+                @deleteAllCompleted="deleteCompleted"
+                @checkAllChanged="checkAllTodos" />
+
+            <div id="todos-footer">
+                <div><strong>todo app</strong> by Asset Sultanov on <img src="../../assets/logo.png">ue.js <br><small>inspired by Evan You</small></div>
+                <p>&copy; 2019</p>
+                <div>
+                <a title="Email me" href="mailto: asset.sultan@gmail.com"><i class="icon dark"><fa icon="envelope" /></i></a>
+                <a title="I'm on Github" href="https://github.com/Assenti" target="_blank"><i class="icon dark"><fa :icon="['fab', 'github']"/></i></a>
+                </div>
+            </div>
+            <div class="backdrop" v-if="authError">
+                <div class="backdrop-inner">
+                <div class="error">{{ authError }}</div>
+                    <div class="form-controls">
+                    <button class="btn primary" @click="navigateTo('/')">Login</button>
+                    </div>
+                </div>
+            </div>
+      </div>
+   
+  </div>
+</template>
+
+<script>
+import Item from './Item'
+import Topnav from './Topnav'
+import Total from './Total'
+import axios from 'axios'
+import Api from '@/services/ApiService'
+import Draggable from 'vuedraggable'
+import TodoSearch from '@/components/TodoSearch'
+import { bus } from '@/main'
+
+export default {
+    name: 'todo',
+    components: {
+        Item,
+        Topnav,
+        Total,
+        Draggable,
+        TodoSearch
+    },  
+    data () {
+        return {
+            todo: '',
+            todos: [],
+            beforeEditCache: '',
+            filter: 'all',
+            error: '',
+            authError: '',
+            search: '',
+            chosenTodoId: '',
+            attrs: [
+                {
+                    key: 'today',
+                    highlight: {
+                        backgroundColor: '#ffd300',
+                        // Other properties are available too, like `height` & `borderRadius`
+                    },
+                    contentStyle: {
+                        color: '#4d4d4d',
+                        fontSize: '16px',
+                        fontWeight: 'bold'
+                    },
+                    popover: {
+                        label: 'You just hovered over today\'s date!',
+                    },
+                    dates: new Date()
+                }
+            ],
+        }
+    },
+
+    created() {
+        bus.$on('filterTodos', (data) => {
+            console.log(data)
+            this.filter = data
+        })
+    },
+
+    mounted () {
+        this.getTodos()
+    },
+
+    computed: {
+        loggedIn () {
+            return this.$store.getters.loggedIn
+        },
+
+        year() {
+        let date = new Date()
+        return date.getFullYear()
+        },
+
+        remaining () {
+        return this.todos.filter(todo => !todo.completed).length
+        },
+
+    anyRemaining () {
+      return this.remaining != 0
+    },
+
+    todosFiltered () {
+        if(this.filter === 'all'){
+            return this.todos
+        } 
+        else if(this.filter === 'active'){
+            return this.todos.filter(todo => !todo.completed)
+        } 
+        else if(this.filter === 'completed'){
+            return this.todos.filter(todo => todo.completed)
+        } 
+        else if(this.filter === 'important'){
+            return this.todos.filter(todo => todo.important)
+        } 
+        else {
+            return this.todos.filter(todo => {
+                return todo.title.toLowerCase().includes(this.filter.toLowerCase())
+            })
+        }
+    },
+
+    isCompletedExists() {
+      return this.todos.filter(todo => todo.completed).length > 0
+    }
+  },
+
+  methods: {
+      getTodos() {
+          if(this.$store.getters.loggedIn) {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`)
+            .then(response => {
+                console.log(response.data)
+                this.todos = response.data
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        } 
+      },
+
+    navigateTo(path) {
+      this.$router.push(path)
+    },
+
+    setFilter (prop) {
+      this.filter = prop
+    },
+
+    removeTodo(id) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+        
+        axios.delete(`${Api.host}/api/todo/deletetodo/${id}`)
+        .then(reponse => {
+            const index = this.todos.findIndex((item) => item.id == id)
+            this.todos.splice(index, 1)
+            this.error = ''
+        })
+        .catch(err => {
+            if(err.response.status == 403) {
+                this.authError = err.response.data
+                this.$store.dispatch('unsetSession')
+            } 
+            else this.error = err.response.data
+        })
+    },
+
+    finishedEdit (data) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+        let editingData = {
+            _id: data._id,
+            title: data.title,
+            completed: data.completed,
+            important: data.important
+        }
+        axios.put(`${Api.host}/api/todo/edittodo`, editingData)
+        .then(response => {
+            const index = this.todos.findIndex((todo) => todo._id == data._id)
+            this.todos.splice(index, 1, response.data)
+            this.error = ''
+        })
+        .catch(err => {
+            if(err.response.status == 403) {
+                this.authError = err.response.data
+                this.$store.dispatch('unsetSession')
+            } 
+            else this.error = err.response.data
+        })
+    },
+
+    checkAllTodos(checked) {
+      this.todos.forEach((todo) => todo.completed = event.target.checked)
+    },
+
+    async deleteCompleted() {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+      axios.put(`${Api.host}/api/todo/deletecompleted`, {
+        todos: this.todos.filter(todo => todo.completed)
+      })
+      .then(response => {
+        if(response.status == 200) {
+          this.todos = this.todos.filter(todo => !todo.completed)
+          this.error = ''
+        }
+      })
+      .catch(err => {
+        if(err.response.status == 403) {
+          this.authError = err.response.data
+          this.$store.dispatch('unsetSession')
+        } 
+        else this.error = err.response.data
+      })
+    },
+
+    showLabel (id) {
+      document.getElementById(id).style.opacity = '1';
+    },
+
+    hideLabel (id) {
+      document.getElementById(id).style.opacity = '0';
+    },
+
+    chooseTodo (id) {
+      this.chosenTodoId = id
+    },
+
+    unchooseTodo () {
+      this.chosenTodoId = ''
+    }
+  }
+}
+</script>
+    

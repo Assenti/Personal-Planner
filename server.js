@@ -16,8 +16,8 @@ app.use(cookieParser())
 app.use(morgan('dev'))
 app.use(cors())
 app.use('/api', require('./server/routes'))
-app.get('/', (req, res)=> {
-	res.redirect('/#' + req.originalUrl)
-})
+// app.get('/', (req, res)=> {
+// 	res.redirect('/#' + req.originalUrl)
+// })
 
 app.listen(config.port, ()=> console.log(`Server started on port ${config.port}...`))

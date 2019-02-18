@@ -1,15 +1,30 @@
 @import 'colors';
 
 .icon {
-	font-size: 18px;
-	height: 18px;
-	width: 18px;
+	font-size: 1.2em !important;
+	height: 40px;
+	width: 40px;
 	cursor: pointer;
-	margin: 0 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
 
 	&:hover {
-		color: $cus-green;
-		transition: .3s ease-in;
+		background-color: rgba(247, 247, 247, .3);
+		transition: all .2s ease;
+	}
+
+	&:active {
+		transform: scale(.95);
+	}
+
+	&.light {
+		color: $light;
+	}
+
+	&.dark {
+		color: $dark;
 	}
 }
 

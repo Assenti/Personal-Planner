@@ -8,10 +8,10 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url('../glenn-carstens-peters-190592-unsplash.jpg');
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: repeat;
+    // background-image: url('../glenn-carstens-peters-190592-unsplash.jpg');
+    // background-attachment: fixed;
+    // background-size: cover;
+    // background-repeat: repeat;
 }
   
 @import 'colors';
@@ -28,6 +28,13 @@ body {
 @import 'share';
 @import 'spinner';
 @import 'todo';
+@import 'calendar';
+@import 'header';
+@import 'backdrop';
+
+.relative {
+    position: relative;
+}
 
 #deleteComp {
     animation: fadeIn .5s ease-in;

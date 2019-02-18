@@ -81,17 +81,17 @@
 	padding: 5px;
 	margin: 0 2px;
 	font-size: 12px;
-	color: $dark;
+	color: $light;
 	cursor: pointer;
 	border: 1px solid transparent;
 	border-radius: 3px;
 
 	&:hover {
-		border-color: $cus-green;
+		border-color: $light;
 		transition: .3s ease-in;
 	}
 
 	&.active {
-		border-color: $cus-green;
+		border-color: $light;
 	}
 }
