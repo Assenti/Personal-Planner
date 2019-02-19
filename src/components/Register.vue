@@ -1,8 +1,7 @@
 <template>
   <div class="auth-block animated fadeIn">
     <div class="auth-block__title">Registration</div>
-    <div class="error" v-if="error">{{ error }}</div>
-    <div class="success" v-if="success">{{ success}}</div>
+    
     <form class="form-slim" @submit.prevent="validateBeforeSubmit">
     	<div class="form-field">
     		<label id="firstname">Firstname* (letters only)</label>
@@ -17,8 +16,8 @@
                autocomplete="off" 
                placeholder="Input firstname" 
                v-validate="'required|alpha'">
-    	  <span class="form-error">{{ errors.first('firstname')}}</span>
-      </div>
+        </div>
+        <span class="animated shake form-error">{{ errors.first('firstname')}}</span>
     	<div class="form-field">
     		<label id="lastname">Lastname* (letters only)</label>
             <fa icon="user" />
@@ -32,8 +31,8 @@
                v-model="lastname" 
                placeholder="Input lastname..." 
                v-validate="'required|alpha'">
-    	  <span class="form-error">{{errors.first('lastname')}}</span>
-      </div>
+        </div>
+        <span class="animated shake form-error">{{errors.first('lastname')}}</span>
     	<div class="form-field">
     		<label id="email-register">Email* (not forget about '@' sign and domain zone)</label>
             <fa icon="envelope" />
@@ -47,8 +46,8 @@
                autocomplete="off" 
                placeholder="Input Email..." 
                v-validate="'required|email'">
-    	  <span class="form-error">{{errors.first('email')}}</span>
-      </div>
+        </div>
+        <span class="animated shake form-error">{{errors.first('email')}}</span>
     	<div class="form-field">
     		<label id="password-register">Password* (min 4 characters)</label>
             <fa icon="key"/>
@@ -63,10 +62,11 @@
                  @blur="labelHide('password-register')" 
                  placeholder="Create a password..." 
                  v-validate="'required|min:4'">
-    			<i class="fa fa-eye icon input-hint" v-if="password.length > 0" @click="passwordVisible"></i>
     		</div>
-        <span class="form-error">{{errors.first('password')}}</span>
     	</div>
+        <span class="animated shake form-error">{{errors.first('password')}}</span>
+        <div class="error" v-if="error">{{ error }}</div>
+        <div class="success" v-if="success">{{ success}}</div>
     	<div class="form-controls relative">
     		<button class="btn cus-green wide " type="submit" :disabled="loading">
           <span v-if="!loading">Register</span>

@@ -50,3 +50,29 @@
 		margin: 0 5px;
 	}
 }
+
+.popover-container {
+	input {
+		outline: none;
+		font-size: 16px;
+		border: none;
+		width: 100%;
+		background-color: transparent;
+
+		&:focus {
+			border-color: $cus-green;
+			transition: all .3s ease-in;
+		}
+
+		&:focus::placeholder {
+			opacity: 0;
+			transition: all .3s ease-in;
+		}
+	}
+}
+
+#dateTodo, 
+#newtodo, 
+#todoPriority {
+	opacity: 1;
+}

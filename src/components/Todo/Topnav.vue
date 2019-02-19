@@ -6,10 +6,10 @@
          <!-- <h2 class="left">Todo list mini-app</h2> -->
        </div>
        <div id="todo-topnav-items">
-         <fa icon="search" class="icon" v-if="!searchTool" @click="startSearch" />
-         <fa icon="times" class="icon" v-if="searchTool" @click="endSearch" /> 
-         <fa icon="share-alt" class="icon" @click="share = !share" title="Share" />
-         <fa icon="sign-out-alt" class="icon" title="Log out" @click="logout" />
+         <!-- <fa icon="search" class="icon" v-if="!searchTool" @click="startSearch" /> -->
+         <!-- <fa icon="times" class="icon" v-if="searchTool" @click="endSearch" />  -->
+         <fa icon="share-alt" class="icon dark" @click="share = !share" title="Share" />
+         <!-- <fa icon="sign-out-alt" class="icon" title="Log out" @click="logout" /> -->
          <div class="share-items" v-if="share">
            <i class="fab fa-whatsapp" title="send to whatsapp" @click="toWhatsApp = !toWhatsApp"></i>
            <i class="far fa-envelope" title="send to email" @click="toEmail = !toEmail"></i>

@@ -1,21 +1,18 @@
 <template>
-    <div id="auth">
-        <h1 style="text-align: center">Personal Planner</h1>
-        <div class="hint">Please pass the authorization to start</div>
-        <div id="auth-header">
-            <span :class="{active: !login}" @click="login = false">Login</span>
-            <span :class="{active: login}" @click="login = true">Register</span>
-        </div>
-        <login v-if="!login"/>
-        <register v-if="login"/>
-        <div id="todos-footer">
-            <div>
-            <span>
-                <strong>Personal Planner</strong> by Asset Sultanov on <img src="../assets/logo.png">ue.js
-            </span>
+    <div>
+        <div class="auth-page">
+            <div class="auth-header">Personal Planner</div>
+            <div class="auth">
+                
+                <div id="auth-header">
+                    <span :class="{active: !login}" @click="login = false">Login</span>
+                    <span :class="{active: login}" @click="login = true">Register</span>
+                </div>
+                <login v-if="!login"/>
+                <register v-if="login"/>
             </div>
-            <p>&copy; 2019</p>
         </div>
+        <!-- <div class="auth-page-backdrop"></div> -->
     </div>
 </template>
 

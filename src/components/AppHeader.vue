@@ -7,13 +7,22 @@
                     enter-active-class="animated slideInRight faster"
                     leave-active-class="animated slideOutRight faster">
                 <div class="header-dropdown" v-if="authMenu">
-                    <div class="header-dropdown-title">Hey, {{user}}</div>
-                    <div class="header-dropdown-avatar">
-                        <img src="../assets/glenn-carstens-peters-190592-unsplash.jpg" alt="">
+                    <div>
+                        <div class="header-dropdown-title">Hey, {{user}}</div>
+                        <div class="header-dropdown-avatar">
+                            <img src="../assets/glenn-carstens-peters-190592-unsplash.jpg" alt="">
+                        </div>
+                        <ul class="header-dropdown-list">
+                            <li @click="logout"><fa icon="sign-out-alt"/> Logout</li>
+                        </ul>
                     </div>
-                    <ul class="header-dropdown-list">
-                        <li><fa icon="sign-out-alt" @click="logout" /> Logout</li>
-                    </ul>
+                    <div class="header-dropdown-footer">
+                        <div>
+                            <a title="Email me" href="mailto: asset.sultan@gmail.com"><i class="icon dark"><fa icon="envelope" /></i></a>
+                            <a title="I'm on Github" href="https://github.com/Assenti" target="_blank"><i class="icon dark"><fa :icon="['fab', 'github']"/></i></a>
+                        </div>
+                        <div>Personal Planner by Asset Sultanov<br>&copy; 2019</div>
+                    </div>
                 </div>
             </transition>
         </span>
@@ -22,6 +31,8 @@
 
 <script>
 import { bus } from '@/main'
+import axios from 'axios'
+import Api from '@/services/ApiService'
 
 export default {
     name: 'app-header',

@@ -1,56 +1,42 @@
 <template>
     <div class="todo">
-        <div class="todo-side">
-            <topnav :todos="todos" @chosen="chooseTodo" @searched="setFilter" />
-            <v-calendar class="calendar" :attributes='attrs' />
+
+        <div class="error" v-if="error">{{ error }}</div>
+
+        <todo-search />
+        
+        <div class="todo-content">
+            <fa icon="clipboard-list" v-if="todos.length == 0" />
+            <item v-for="(todo, index) in todosFiltered"
+                :key="todo._id" 
+                :todo="todo" 
+                :index="index"
+                :chosenTodoId="chosenTodoId"
+                @unchosen="unchooseTodo"
+                @removedTodo="removeTodo"
+                @finishedEdit="finishedEdit"
+                :checkAll="!anyRemaining" />
+                        
+            <div class="hint" v-if="todos.length > 0">Double click on item to edit it</div>
         </div>
 
-      <div class="todo-side"> 
-            
-            <div class="error" v-if="error">{{ error }}</div>
-            <todo-search />
-            <div class="todo-content">
-                <fa icon="clipboard-list" v-if="todos.length == 0" />
-                <item v-for="(todo, index) in todosFiltered"
-                    :key="todo._id" 
-                    :todo="todo" 
-                    :index="index"
-                    :chosenTodoId="chosenTodoId"
-                    @unchosen="unchooseTodo"
-                    @removedTodo="removeTodo"
-                    @finishedEdit="finishedEdit"
-                    :checkAll="!anyRemaining" />
-                            
-                <div class="hint" v-if="todos.length > 0">Double click on item to edit it</div>
-            </div>
+        <total :anyRemaining="anyRemaining" 
+            :remaining="remaining"
+            :isCompletedExists="isCompletedExists"
+            :filter="filter"
+            @filtered="setFilter"
+            @deleteAllCompleted="deleteCompleted"
+            @checkAllChanged="checkAllTodos" />
 
-            <total :anyRemaining="anyRemaining" 
-                :remaining="remaining"
-                :isCompletedExists="isCompletedExists"
-                :filter="filter"
-                @filtered="setFilter"
-                @deleteAllCompleted="deleteCompleted"
-                @checkAllChanged="checkAllTodos" />
-
-            <div id="todos-footer">
-                <div><strong>todo app</strong> by Asset Sultanov on <img src="../../assets/logo.png">ue.js <br><small>inspired by Evan You</small></div>
-                <p>&copy; 2019</p>
-                <div>
-                <a title="Email me" href="mailto: asset.sultan@gmail.com"><i class="icon dark"><fa icon="envelope" /></i></a>
-                <a title="I'm on Github" href="https://github.com/Assenti" target="_blank"><i class="icon dark"><fa :icon="['fab', 'github']"/></i></a>
+        <div class="backdrop" v-if="authError">
+            <div class="backdrop-inner">
+            <div class="error">{{ authError }}</div>
+                <div class="form-controls">
+                <button class="btn primary" @click="navigateTo('/')">Login</button>
                 </div>
             </div>
-            <div class="backdrop" v-if="authError">
-                <div class="backdrop-inner">
-                <div class="error">{{ authError }}</div>
-                    <div class="form-controls">
-                    <button class="btn primary" @click="navigateTo('/')">Login</button>
-                    </div>
-                </div>
-            </div>
-      </div>
-   
-  </div>
+        </div>    
+    </div>
 </template>
 
 <script>
@@ -120,42 +106,42 @@ export default {
         },
 
         year() {
-        let date = new Date()
-        return date.getFullYear()
+            let date = new Date()
+            return date.getFullYear()
         },
 
         remaining () {
-        return this.todos.filter(todo => !todo.completed).length
+            return this.todos.filter(todo => !todo.completed).length
         },
 
-    anyRemaining () {
-      return this.remaining != 0
-    },
+        anyRemaining () {
+            return this.remaining != 0
+        },
 
-    todosFiltered () {
-        if(this.filter === 'all'){
-            return this.todos
-        } 
-        else if(this.filter === 'active'){
-            return this.todos.filter(todo => !todo.completed)
-        } 
-        else if(this.filter === 'completed'){
-            return this.todos.filter(todo => todo.completed)
-        } 
-        else if(this.filter === 'important'){
-            return this.todos.filter(todo => todo.important)
-        } 
-        else {
-            return this.todos.filter(todo => {
-                return todo.title.toLowerCase().includes(this.filter.toLowerCase())
-            })
+        todosFiltered () {
+            if(this.filter === 'all'){
+                return this.todos
+            } 
+            else if(this.filter === 'active'){
+                return this.todos.filter(todo => !todo.completed)
+            } 
+            else if(this.filter === 'completed'){
+                return this.todos.filter(todo => todo.completed)
+            } 
+            else if(this.filter === 'important'){
+                return this.todos.filter(todo => todo.important)
+            } 
+            else {
+                return this.todos.filter(todo => {
+                    return todo.title.toLowerCase().includes(this.filter.toLowerCase())
+                })
+            }
+        },
+
+        isCompletedExists() {
+            return this.todos.filter(todo => todo.completed).length > 0
         }
     },
-
-    isCompletedExists() {
-      return this.todos.filter(todo => todo.completed).length > 0
-    }
-  },
 
   methods: {
       getTodos() {

@@ -9,22 +9,27 @@ import 'animate.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser, faKey, faEnvelope, faClipboardList,
 faFlag, faSearch, faShareAlt, faTimes, faSignOutAlt,
-faCalendarAlt, faTrashAlt, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+faCalendarAlt, faTrashAlt, faCheckCircle, faPlusCircle,
+faEye, faListUl, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { faWhatsapp, faGithub } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { setupCalendar, Calendar} from 'v-calendar'
+import 'v-calendar/'
+import { setupCalendar, DatePicker } from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css';
 
 library.add(faWhatsapp, faUser, faKey, faEnvelope, faGithub,
-    faClipboardList, faFlag, faSearch, faShareAlt, faTimes,
-    faSignOutAlt, faCalendarAlt, faTrashAlt, faCheckCircle)
+faClipboardList, faFlag, faSearch, faShareAlt, faTimes,
+faSignOutAlt, faCalendarAlt, faTrashAlt, faCheckCircle,
+faPlusCircle, faEye, faListUl, faExclamationCircle)
 
 setupCalendar({
     firstDayOfWeek: 2,  // Monday
 })
 
+export const bus = new Vue()
+
 Vue.component('fa', FontAwesomeIcon)
-Vue.component('v-calendar', Calendar)
+Vue.component('date-picker', DatePicker)
 Vue.config.productionTip = false
 Vue.use(VeeValidate)
 
