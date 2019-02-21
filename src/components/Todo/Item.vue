@@ -1,44 +1,41 @@
 <template>
-    <draggable :class="{ chosen: chosenTodoId === todo._id }" class="todo-item">
-        <div class="flex align-center">
-        <div class="flex align-center">
-            <label class="input-checkbox-flag">
-                <input type="checkbox" v-model="important" title="Important" @change="doneEdit">
-                <fa :class="{red: important }" icon="flag" class="icon-sm" />
-            </label>
-            <label class="input-checkbox">
-                <input type="checkbox" v-model="completed" title="Done" @change="doneEdit">
-                <span></span>
-            </label>
-            <i :title="'Added on ' + createdDate" class="icon dark"><fa icon="calendar-alt" /></i>
+    <div :class="{ chosen: chosenTodoId === todo._id }" class="todo-item">
+        <div class="todo-item-inner">
+            <div class="flex align-center">
+                <label class="input-checkbox-flag">
+                    <input type="checkbox" v-model="important" title="Important" @change="doneEdit">
+                    <fa :class="{red: important }" icon="flag" class="icon-sm" />
+                </label>
+                <label class="input-checkbox">
+                    <input type="checkbox" v-model="completed" title="Done" @change="doneEdit">
+                    <span></span>
+                </label>
+                <i :title="'Added on ' + createdDate" class="icon dark"><fa icon="calendar-alt" /></i>
+                <input
+                    id="todo-item-input"   
+                    type="text" 
+                    v-model="title" 
+                    v-if="editing" 
+                    @blur="doneEdit" 
+                    @keyup.enter="doneEdit" 
+                    @keyup.esc="cancelEdit" 
+                    v-focus />
+                <span :class="{important: important, completed: completed }" 
+                    v-if="!editing" 
+                    @dblclick="editTodo"
+                    @mouseover="unchoose">
+                    {{ title }}
+                </span>
             </div>
-            <input
-                id="todo-item-input"   
-                type="text" 
-                v-model="title" 
-                v-if="editing" 
-                @blur="doneEdit" 
-                @keyup.enter="doneEdit" 
-                @keyup.esc="cancelEdit" 
-                v-focus />
-            <span :class="{important: important, completed: completed }" 
-                v-if="!editing" 
-                @dblclick="editTodo"
-                @mouseover="unchoose"
-                >{{ title }}</span>
+            <span class="icon dark" @click="removeTodo" title="Remove"><fa icon="trash-alt" /></span>
         </div>
-        <span class="icon dark" @click="removeTodo" title="Remove"><fa icon="times" /></span>
-    </draggable>
+        <div title="Drag to replace" class="todo-item-grab draggable"><fa icon="arrows-alt"/></div>
+    </div>
 </template>
 
 <script>
-import Draggable from 'vuedraggable'
-
 export default {
   name: 'item',
-  components: {
-    Draggable
-  },
   props: {
     todo: {
       type: Object,

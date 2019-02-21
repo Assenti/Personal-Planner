@@ -100,7 +100,7 @@
 
 .todo-content {
     width: 100%;
-    min-height: 300px;
+    min-height: 500px;
     max-height: 500px;
     overflow-y: auto;
     background-color: rgba(247, 247, 247, .5); 
@@ -194,15 +194,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px;
   margin: 2px 0;
   width: 100%;
   height: 40px;
   border-radius: 3px;
   border: 1px solid #ccc;
+  overflow: hidden;
 
   &:hover, &.chosen {
-    background-color: rgba(82, 122, 122, .2);
+    background-color: rgba(82, 122, 122, .1);
     outline-offset: -1px;
     outline: 1px solid #527a7a;
   }
@@ -211,6 +211,27 @@
     font-size: 18px;
     cursor: pointer;
     padding: 0 2px;
+  }
+}
+
+.todo-item-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.todo-item-grab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 100%;
+  background-color: $cus-green;
+  cursor: grab;
+
+  & > svg {
+    color: $light;
   }
 }
 

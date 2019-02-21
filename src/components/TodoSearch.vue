@@ -13,7 +13,7 @@
 
         <div v-if="newTodoModal">
             <div class="backdrop" @click="newTodoModal = false"></div>
-            <new-todo-modal/>
+            <new-todo-modal class="animated fadeInDown fast"/>
         </div>
     </div>
 </template>

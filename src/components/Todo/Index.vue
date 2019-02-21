@@ -7,17 +7,21 @@
         
         <div class="todo-content">
             <fa icon="clipboard-list" v-if="todos.length == 0" />
-            <item v-for="(todo, index) in todosFiltered"
-                :key="todo._id" 
-                :todo="todo" 
-                :index="index"
-                :chosenTodoId="chosenTodoId"
-                @unchosen="unchooseTodo"
-                @removedTodo="removeTodo"
-                @finishedEdit="finishedEdit"
-                :checkAll="!anyRemaining" />
-                        
-            <div class="hint" v-if="todos.length > 0">Double click on item to edit it</div>
+            <draggable v-model="todosFiltered"
+                    :options="{animation: 200, handle: '.todo-item-grab'}" 
+                    @start="drag=true" 
+                    @end="drag=false">
+                <item v-for="(todo, index) in todosFiltered"
+                    :key="index" 
+                    :todo="todo" 
+                    :index="index"
+                    :chosenTodoId="chosenTodoId"
+                    @unchosen="unchooseTodo"
+                    @removedTodo="removeTodo"
+                    @finishedEdit="finishedEdit"
+                    :checkAll="!anyRemaining" />
+            </draggable>
+            <!-- <div class="hint" v-if="todos.length > 0">Double click on item to edit it</div> -->
         </div>
 
         <total :anyRemaining="anyRemaining" 
@@ -169,7 +173,7 @@ export default {
     removeTodo(id) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
         
-        axios.delete(`${Api.host}/api/todo/deletetodo/${id}`)
+        axios.delete(`${Api.host}/api/deleteTodo?todoId=${id}`)
         .then(reponse => {
             const index = this.todos.findIndex((item) => item.id == id)
             this.todos.splice(index, 1)
@@ -192,7 +196,7 @@ export default {
             completed: data.completed,
             important: data.important
         }
-        axios.put(`${Api.host}/api/todo/edittodo`, editingData)
+        axios.put(`${Api.host}/api/editTodo`, editingData)
         .then(response => {
             const index = this.todos.findIndex((todo) => todo._id == data._id)
             this.todos.splice(index, 1, response.data)
