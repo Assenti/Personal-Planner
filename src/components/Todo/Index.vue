@@ -3,16 +3,17 @@
 
         <div class="error" v-if="error">{{ error }}</div>
 
-        <todo-search />
+        <todo-search :anyRemaining="anyRemaining"
+                    @checkAllChanged="checkAllTodos" />
         
         <div class="todo-content">
-            <fa icon="clipboard-list" v-if="todos.length == 0" />
+            <fa class="todo-content-bg" icon="clipboard-list"/>
             <draggable v-model="todosFiltered"
                     :options="{animation: 200, handle: '.todo-item-grab'}" 
                     @start="drag=true" 
                     @end="drag=false">
                 <item v-for="(todo, index) in todosFiltered"
-                    :key="index" 
+                    :key="todo._id" 
                     :todo="todo" 
                     :index="index"
                     :chosenTodoId="chosenTodoId"
@@ -21,7 +22,6 @@
                     @finishedEdit="finishedEdit"
                     :checkAll="!anyRemaining" />
             </draggable>
-            <!-- <div class="hint" v-if="todos.length > 0">Double click on item to edit it</div> -->
         </div>
 
         <total :anyRemaining="anyRemaining" 
@@ -95,9 +95,13 @@ export default {
 
     created() {
         bus.$on('filterTodos', (data) => {
-            console.log(data)
             this.filter = data
         })
+
+        bus.$on('updateTodos', (data) => {
+            this.todos = data
+        })
+
     },
 
     mounted () {
@@ -122,23 +126,29 @@ export default {
             return this.remaining != 0
         },
 
-        todosFiltered () {
-            if(this.filter === 'all'){
-                return this.todos
-            } 
-            else if(this.filter === 'active'){
-                return this.todos.filter(todo => !todo.completed)
-            } 
-            else if(this.filter === 'completed'){
-                return this.todos.filter(todo => todo.completed)
-            } 
-            else if(this.filter === 'important'){
-                return this.todos.filter(todo => todo.important)
-            } 
-            else {
-                return this.todos.filter(todo => {
-                    return todo.title.toLowerCase().includes(this.filter.toLowerCase())
-                })
+        todosFiltered: {
+            get() {
+                if(this.filter === 'all'){
+                    return this.todos
+                } 
+                else if(this.filter === 'active'){
+                    return this.todos.filter(todo => !todo.completed)
+                } 
+                else if(this.filter === 'completed'){
+                    return this.todos.filter(todo => todo.completed)
+                } 
+                else if(this.filter === 'important'){
+                    return this.todos.filter(todo => todo.important)
+                } 
+                else {
+                    return this.todos.filter(todo => {
+                        return todo.title.toLowerCase().includes(this.filter.toLowerCase())
+                    })
+                }
+            },
+
+            set(newTodos) {
+                this.todos = newTodos
             }
         },
 
@@ -153,8 +163,8 @@ export default {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`)
             .then(response => {
-                console.log(response.data)
                 this.todos = response.data
+                this.$store.dispatch('setTodos', response.data)
             })
             .catch(err => {
                 console.log(err)
@@ -175,8 +185,9 @@ export default {
         
         axios.delete(`${Api.host}/api/deleteTodo?todoId=${id}`)
         .then(reponse => {
-            const index = this.todos.findIndex((item) => item.id == id)
-            this.todos.splice(index, 1)
+            this.todos = this.todos.filter(todo => {
+                return todo._id !== id
+            })
             this.error = ''
         })
         .catch(err => {
@@ -184,7 +195,12 @@ export default {
                 this.authError = err.response.data
                 this.$store.dispatch('unsetSession')
             } 
-            else this.error = err.response.data
+            else {
+                this.error = 'ERROR'
+                setTimeout(() => {
+                    this.error = ''
+                }, 3000)
+            }
         })
     },
 

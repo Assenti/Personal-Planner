@@ -27,9 +27,18 @@ exports.search = (req, res) => {
 }
 
 exports.createTodo = (req, res) => {
+    let important = false
+
+    if(req.body.priority === 'High') {
+        important = true
+    }
+
     let todo = new Todo({ 
         title: req.body.title,
-        user: req.body.user 
+        user: req.body.user,
+        important: important,
+        order: req.body.order,
+        expDate: req.body.expDate 
     })
     todo.save((err, todo)=> {
         if(err) {

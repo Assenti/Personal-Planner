@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-		user: JSON.parse(localStorage.getItem('user')) || null
+		user: JSON.parse(localStorage.getItem('user')) || null,
+		todos: null
 	},
 	getters: {
 		loggedIn (state) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
 	mutations: {
 		setSession(state, data) {
 			state.user = data
+        },
+        setTodos(state, data) {
+            state.todos = data
         }
 	},
 	actions: {
@@ -31,6 +35,10 @@ export default new Vuex.Store({
 		unsetSession(context) {
 			localStorage.removeItem('user')
 			context.commit('setSession', null)
-		}
+        },
+        
+        setTodos(context, credentials) {
+            context.commit('setTodos', credentials)
+        }
 	}
 })

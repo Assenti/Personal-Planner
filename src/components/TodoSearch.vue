@@ -1,5 +1,9 @@
 <template>
     <div class="todo-search">
+        <div class="input-checkbox tooltip is-tooltip-right" data-tooltip="Mark all todos as done">
+            <input id="allChecked" type="checkbox" :checked="!anyRemaining" @change="allChecked">
+            <label for="allChecked"></label>
+        </div>
         <div class="todo-search-field">
             <fa icon="search" />
             <input type="text" 
@@ -8,10 +12,10 @@
                 v-model="search" 
                 placeholder="Search todo (start typing...)" />
         </div>
-        <i title="Share" class="icon light" @click="openShareOptions"><fa icon="share-alt" /></i>
-        <i title="Add Todo" class="icon light" @click="openAddTodoModal"><fa icon="plus-circle" /></i>
+        <i data-tooltip="Share" class="tooltip icon dark" @click="openShareOptions"><fa icon="share-alt" /></i>
+        <i data-tooltip="Add Todo" class="tooltip icon dark" @click="openAddTodoModal"><fa icon="plus-circle" /></i>
 
-        <div v-if="newTodoModal">
+        <div class="modal-wrapper" v-if="newTodoModal">
             <div class="backdrop" @click="newTodoModal = false"></div>
             <new-todo-modal class="animated fadeInDown fast"/>
         </div>
@@ -26,6 +30,12 @@ export default {
     name: 'todo-search',
     components: {
         NewTodoModal
+    },
+    props: {
+        anyRemaining: {
+            type: Boolean,
+            required: true
+        }
     },
     data() {
         return {
@@ -50,6 +60,10 @@ export default {
 
         openShareOptions() {
             
+        },
+
+        allChecked() {
+            this.$emit('checkAllChanged', this.anyRemaining)
         }
     }
 }

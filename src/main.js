@@ -13,9 +13,9 @@ faCalendarAlt, faTrashAlt, faCheckCircle, faPlusCircle,
 faEye, faListUl, faExclamationCircle, faArrowsAlt } from '@fortawesome/free-solid-svg-icons'
 import { faWhatsapp, faGithub } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import 'v-calendar/'
 import { setupCalendar, DatePicker } from 'v-calendar'
-import 'v-calendar/lib/v-calendar.min.css';
+import 'v-calendar/lib/v-calendar.min.css'
+import 'bulma-tooltip/dist/css/bulma-tooltip.min.css'
 
 library.add(faWhatsapp, faUser, faKey, faEnvelope, faGithub,
 faClipboardList, faFlag, faSearch, faShareAlt, faTimes,

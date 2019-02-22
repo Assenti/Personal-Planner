@@ -80,11 +80,12 @@
 	text-align: center;
 	padding: 5px;
 	margin: 0 2px;
-	font-size: 12px;
+	font-size: 14px;
 	color: $light;
 	cursor: pointer;
-	border: 1px solid transparent;
+	border: 2px solid transparent;
 	border-radius: 3px;
+	min-width: 50px;
 
 	&:hover {
 		border-color: $light;

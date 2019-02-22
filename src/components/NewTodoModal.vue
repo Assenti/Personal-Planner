@@ -8,13 +8,14 @@
             <div class="form-field">
                 <label id="newtodo">What needs to be done?</label>
                 <fa icon="list-ul"/>
-                <input class="input" 
+                <textarea class="textarea" 
                     type="text" 
                     :class="{ 'input-error': errors.has('newTodo')}"
                     v-validate="'required'"
+                    autocomplete="off"
                     name="newTodo" 
                     v-model="todo"
-                    placeholder="What needs to be done?">
+                    placeholder="What needs to be done?"></textarea>
             </div>
             <span class="animated shake form-error">{{errors.first('newTodo')}}</span>
             <div class="form-field">
@@ -55,6 +56,8 @@
 
 <script>
 import { bus } from '@/main'
+import axios from 'axios'
+import Api from '@/services/ApiService'
 
 export default {
     name: 'new-todo-modal',
@@ -78,17 +81,22 @@ export default {
                 }
             })
         },
+
         addTodo() {
             if(this.todo.trim().length == 0) return
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             let data = { 
                 title: this.todo,
                 priority: this.todoPriority,
-                date: this.todoDate,
-                user: this.$store.state.user._id 
+                expDate: this.todoDate,
+                user: this.$store.state.user._id,
+                order: this.$store.state.todos.length + 1 
             }
-            axios.post(`${Api.host}/api/createTodo`, data)
+            axios.post(`${Api.host}/api/createTodo`, data, {
+                timeout: 5000
+            })
             .then(response => {
+                bus.$emit('updateTodos', response.data)
                  this.message = 'ADDED'
                  this.status = 'success'
                  setTimeout(() => {
@@ -98,8 +106,18 @@ export default {
             })
             .catch(err => {
                 if(err.response.status == 403) {
-                    this.authError = err.response.data
+                    this.message = 'Session expired'
+                    this.status = 'error'
                     this.$store.dispatch('unsetSession')
+                    this.$router.push('/')
+                }
+                else if(err.code === 'ECONABORTED') {
+                    this.message = 'Server not response'
+                    this.status = 'error'
+                    setTimeout(() => {
+                        this.message = ''
+                        this.status = ''
+                    }, 3000)
                 } 
                 else {
                     this.message = 'ERROR'

@@ -32,15 +32,10 @@ body {
 @import 'header';
 @import 'dropdown';
 
-.relative {
-    position: relative;
-}
-
-#deleteComp {
-    animation: fadeIn .5s ease-in;
-    -webkit-animation: fadeIn .5s ease-in;
-    -moz-animation: fadeIn .5s ease-in;
-    -o-animation: fadeIn .5s ease-in;
+#app,
+#main {
+    height: 100vh;
+    width: 100%;
 }
 
 .important {

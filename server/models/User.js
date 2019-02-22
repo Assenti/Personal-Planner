@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const config = require('../config')
+mongoose.connect(config.mongoURI, { useNewUrlParser: true })
 const bcrypt = require('bcryptjs')
 
 const UserSchema = mongoose.Schema({
@@ -11,8 +13,8 @@ const UserSchema = mongoose.Schema({
 	date: {type: Date, default: Date.now }
 })
 
-UserSchema.pre('save', function(next) {
-	var user = this;
+UserSchema.pre('save', (next) => {
+	let user = this
 	if(!user.isModified('password')){
 		return next()
 	}
@@ -28,8 +30,8 @@ UserSchema.pre('save', function(next) {
 })
 
 
-UserSchema.methods.comparePassword = function(password, next){
-	var user = this;
+UserSchema.methods.comparePassword = (password, next) => {
+	let user = this
 
 	bcrypt.compare(password, user.password, (err, isEqual)=> {
 		if(err) return next(err)

@@ -2,10 +2,11 @@
   "name": "planner",
   "version": "0.1.0",
   "private": true,
+  "author": "Asset Sultanov <asset.sultan@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "start": "nodemon server.js",
+    "start": "nodemon bin/dev",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -19,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "bulma": "^0.7.4",
+    "bulma-tooltip": "^2.0.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
@@ -45,6 +47,7 @@
     "@vue/test-utils": "^1.0.0-beta.20",
     "acorn": "^6.1.0",
     "chai": "^4.1.2",
+    "dotenv": "^6.2.0",
     "eslint": "^5.13.0",
     "node-sass": "^4.9.0",
     "nodemon": "^1.18.10",

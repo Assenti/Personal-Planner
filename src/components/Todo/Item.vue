@@ -1,18 +1,18 @@
 <template>
     <div :class="{ chosen: chosenTodoId === todo._id }" class="todo-item">
         <div class="todo-item-inner">
-            <div class="flex align-center">
-                <label class="input-checkbox-flag">
-                    <input type="checkbox" v-model="important" title="Important" @change="doneEdit">
+            <div class="todo-item-left">
+                <label data-tooltip="Mark as done" class="input-checkbox tooltip is-tooltip-right">
+                    <input :id="todo._id" type="checkbox" v-model="completed" @change="doneEdit">
+                    <label :for="todo._id"></label>
+                </label>
+                <label data-tooltip="Mark as important" class="input-checkbox-flag tooltip is-tooltip-right">
+                    <input type="checkbox" v-model="important" @change="doneEdit">
                     <fa :class="{red: important }" icon="flag" class="icon-sm" />
                 </label>
-                <label class="input-checkbox">
-                    <input type="checkbox" v-model="completed" title="Done" @change="doneEdit">
-                    <span></span>
-                </label>
-                <i :title="'Added on ' + createdDate" class="icon dark"><fa icon="calendar-alt" /></i>
+                <i class="todo-date">EffDate: {{ dateFormat(effDate) }}</i>
                 <input
-                    id="todo-item-input"   
+                    class="todo-item-input"   
                     type="text" 
                     v-model="title" 
                     v-if="editing" 
@@ -20,15 +20,18 @@
                     @keyup.enter="doneEdit" 
                     @keyup.esc="cancelEdit" 
                     v-focus />
-                <span :class="{important: important, completed: completed }" 
+                <span :class="{important: important, completed: completed }"
+                    :title="title" 
                     v-if="!editing" 
                     @dblclick="editTodo"
                     @mouseover="unchoose">
-                    {{ title }}
+                    {{ textSegment(title) }}
                 </span>
             </div>
-            <span class="icon dark" @click="removeTodo" title="Remove"><fa icon="trash-alt" /></span>
+            <i class="todo-date">ExpDate: {{ dateFormat(expDate) }}</i>
+            <i class="icon dark tooltip is-tooltip-left" @click="removeTodo" data-tooltip="Remove"><fa icon="trash-alt" /></i>
         </div>
+        
         <div title="Drag to replace" class="todo-item-grab draggable"><fa icon="arrows-alt"/></div>
     </div>
 </template>
@@ -62,17 +65,11 @@ export default {
       important: this.todo.important,
       editing: this.todo.editing,
       beforeEditCache: '',
-      date: this.todo.date 
+      effDate: this.todo.date,
+      expDate: this.todo.expDate 
     }
   },
   
-  computed: {
-    createdDate () {
-      let splitted = this.date.split(/[-|,|:|T|.|Z]/)
-      return splitted[0] + '/' + splitted[1] + '/' +  splitted[2]
-    }
-  },
-
   watch: {
     checkAll() {
       this.completed = this.checkAll ? true : this.todo.completed
@@ -96,6 +93,11 @@ export default {
       this.editing = true
     },
 
+    dateFormat(date) {
+        let splitted = date.split(/[-|,|:|T|.|Z]/)
+        return splitted[0] + '-' + splitted[1] + '-' +  splitted[2]
+    },
+
     doneEdit(){
       if(this.title == ''){
         this.title = this.beforeEditCache
@@ -117,6 +119,15 @@ export default {
 
     unchoose () {
       this.$emit('unchosen')
+    },
+
+    textSegment(text) {
+        if(text.length >= 38) {
+            return `${text.substr(0, 38)}...`
+        }
+        else {
+            return text
+        }        
     }
   }
 }

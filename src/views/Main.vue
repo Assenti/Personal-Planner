@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="main">
         <app-header />
         <todo />
     </div>

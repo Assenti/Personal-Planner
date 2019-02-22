@@ -1,20 +1,13 @@
 <template>
     <div class="todos-total">
-        <div class="input-checkbox light" title="Check All">
-            <input type="checkbox" :checked="!anyRemaining" @change="allChecked">
-            <span></span>
-        </div>
-        <div id="todo-counts" title="Remaining">
-            <fa icon="clipboard-list" />
-            <span>{{ remaining }}</span>
-        </div>
+        <div class="todo-counts tooltip" data-tooltip="Remaining todos">{{ remaining }}</div>
         <div class="flex align-center">
             <div class="filter-btn" :class="{active: filter === 'all'}" @click="filterTodos('all')">All</div>
             <div class="filter-btn" :class="{active: filter === 'active'}" @click="filterTodos('active')">Active</div>
-            <i title="Show completed" class="icon light" :class="{active: filter === 'completed'}" @click="filterTodos('completed')"><fa icon="check-circle"/></i>
-            <i title="Show importants" class="icon light" :class="{active: filter === 'important'}" @click="filterTodos('important')"><fa icon="flag"/></i>
+            <div class="filter-btn" :class="{active: filter === 'completed'}" @click="filterTodos('completed')">Completed</div>
+            <div class="filter-btn" :class="{active: filter === 'important'}" @click="filterTodos('important')">Important</div>
         </div>
-        <i id="deleteComp" title="Delete completed" class="icon light" v-if="isCompletedExists" @click="deleteCompleted"><fa icon="trash-alt" /></i>
+        <i data-tooltip="Delete completed" class="tooltip icon light" v-if="isCompletedExists" @click="deleteCompleted"><fa icon="trash-alt" /></i>
     </div>
 </template>
 
@@ -41,10 +34,6 @@ export default {
     },
   
     methods: {
-        allChecked() {
-            this.$emit('checkAllChanged', this.anyRemaining)
-        },
-
         filterTodos (prop) {
             this.$emit('filtered', prop)
         },
