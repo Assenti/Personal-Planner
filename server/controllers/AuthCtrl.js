@@ -41,7 +41,7 @@ exports.signin = (req, res) => {
 		else {
 			user.comparePassword(req.body.password, (err, isEqual)=> {
 				if(err) {
-					console.log(err)
+					console.log('Comparing password error: ' + err)
 					res.sendStatus(500)
 				}
 				else if(!isEqual) res.sendStatus(401)

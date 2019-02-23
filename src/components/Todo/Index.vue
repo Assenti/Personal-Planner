@@ -163,6 +163,7 @@ export default {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`)
             .then(response => {
+                console.log(response.data)
                 this.todos = response.data
                 this.$store.dispatch('setTodos', response.data)
             })

@@ -84,11 +84,14 @@ export default {
 
     login() {
         this.loading = true
-        axios.post(`${Api.host}/api/signin`, {
+
+        let data = {
             email: this.email,
             password: this.password,
             rememberme: this.rememberme
-        }, 100)
+        }
+
+        axios.post(`${Api.host}/api/signin`, data, { timeout: 5000 })
         .then(response => {
             this.$store.dispatch('setSession', response.data)
             this.$router.push('/main')
@@ -96,8 +99,17 @@ export default {
         .catch(err => {
             console.log(err)
             if(err.response.status == 401) {
-                this.error = err.response.data
+                this.error = 'WRONG LOGIN OR PASSWORD'
             }
+            else if(err.code === 'ECONABORTED') {
+                this.error = 'SERVER NOT RESPONSE'
+            }
+            else {
+                this.error = 'SERVER ERROR'
+            }
+            setTimeout(() => {
+                this.error = ''
+            }, 4000)
         })
         .finally(() => {
             this.loading = false

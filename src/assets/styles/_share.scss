@@ -1,49 +1,40 @@
 @import 'colors';
 
-.share {
-  font-size: 18px;
-  cursor: pointer;
-  color: $dark;
-  margin: 0 5px;
-  animation: fadein .5s ease-in;
-  -webkit-animation: fadein .5s ease-in;
-  -moz-animation: fadein .5s ease-in;
-  -o-animation: fadein .5s ease-in;
+.share-menu {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    background-color: $cus-green;
+    white-space: nowrap;
+    z-index: 50;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
 
-  &:hover {
-    color: $cus-green;
-    transition: all .3s ease-in;
-  }
-}
+    & > div {
+        position: absolute;
+        top: -8px;
+        right: calc(50% - 10px);
+        width: 0; 
+        height: 0; 
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid $cus-green;
+    }
 
-.share-items {
-	position: absolute;
-	top: calc(100% + 10px);
-	right: 25px;
-	background-color: rgba(247, 247, 247, .9);
-	border-radius: 30px;
-	padding: 10px 10px;
-	box-shadow: 0px 2px 10px rgba(0, 0, 0, .3);
-	animation: fadein .5s ease-in;
-    -webkit-animation: fadein .5s ease-in;
-    -moz-animation: fadein .5s ease-in;
-    -o-animation: fadein .5s ease-in;
-    z-index: 3;
+    & > li {
+        list-style: none;
+        padding: 10px 15px;
+        font-size: .9em;
+        cursor: pointer;
+        color: $light;
+        border-bottom: 1px solid $light;
+    }
 
-	& > i {
-		display: block;
-		font-size: 20px;
-		cursor: pointer;
-		margin: 7px 0;
-	}
+    & > li:last-child {
+        border: none;
+    }
 
-	& > i:hover {
-	    color: $cus-green;
-	    transition: .3s ease-in;
-	}
-}
-
-@keyframes fadein {
-	0% { opacity: 0; }
-	100% { opacity: 1; }
+    & > li:hover {
+        color: cornflowerblue;
+        text-decoration: underline cornflowerblue;
+    }
 }

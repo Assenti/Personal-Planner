@@ -16,7 +16,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { setupCalendar, DatePicker } from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css'
 import 'bulma-tooltip/dist/css/bulma-tooltip.min.css'
-
+import JsonExcel from 'vue-json-excel'
+ 
 library.add(faWhatsapp, faUser, faKey, faEnvelope, faGithub,
 faClipboardList, faFlag, faSearch, faShareAlt, faTimes,
 faSignOutAlt, faCalendarAlt, faTrashAlt, faCheckCircle,
@@ -29,6 +30,7 @@ setupCalendar({
 
 export const bus = new Vue()
 
+Vue.component('excel', JsonExcel)
 Vue.component('fa', FontAwesomeIcon)
 Vue.component('date-picker', DatePicker)
 Vue.config.productionTip = false

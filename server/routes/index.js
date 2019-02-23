@@ -3,6 +3,7 @@ const router = express.Router()
 const AuthCtrl = require('../controllers/AuthCtrl')
 const TodosCtrl = require('../controllers/TodosCtrl')
 const JwtService = require('../services/JwtService')
+const SendCtrl = require('../controllers/SendCtrl')
 
 router.post('/signin', AuthCtrl.signin)
 
@@ -21,5 +22,7 @@ router.put('/editTodo', TodosCtrl.editTodo)
 router.put('/deleteCompleted', TodosCtrl.deleteCompleted)
 
 router.delete('/deleteTodo', TodosCtrl.deleteTodo)
+
+router.post('/sendToEmail', SendCtrl.sendToEmail)
 
 module.exports = router

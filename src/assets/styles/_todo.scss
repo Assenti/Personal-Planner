@@ -256,10 +256,10 @@
 }
 
 .todo-item-input {
-  width: 100%;
+  width: calc(100% - 115px);
   outline: none;
   padding: 0 2px;
-  font-size: 18px;
+  font-size: 1em;
   border: none;
   border-bottom: 1px solid $cus-green;
   background-color: transparent;
