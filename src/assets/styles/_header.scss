@@ -22,10 +22,33 @@
     height: calc(100vh - 60px);
     background-color: #527a7a;
     position: absolute;
+    display: flex;
     right: 0;
     top: 60px;
     box-shadow: 0 0 30px 5px rgba(82, 122, 122, .5);
     z-index: 20;
+}
+
+.header-dropdown-closer {
+    width: 20px;
+    background-color: darken($cus-green, 5%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > svg {
+        color: $light;
+        font-weight: 600;
+    }
+
+    &:hover {
+        background-color: darken($cus-green, 10%);
+    }
+}
+
+.header-dropdown-content {
+    width: calc(100% - 20px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -33,6 +56,7 @@
 
 .header-dropdown-title {
     text-align: center;
+    flex-grow: 3;
     color: $light;
     font-size: 1.2em;
     margin: 10px 0;

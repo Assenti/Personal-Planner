@@ -19,6 +19,10 @@ router.post('/createTodo', TodosCtrl.createTodo)
 
 router.put('/editTodo', TodosCtrl.editTodo)
 
+router.get('/setUnsetCompleted', TodosCtrl.setUnsetCompleted)
+
+router.get('/setUnsetImportant', TodosCtrl.setUnsetImportant)
+
 router.put('/deleteCompleted', TodosCtrl.deleteCompleted)
 
 router.delete('/deleteTodo', TodosCtrl.deleteTodo)

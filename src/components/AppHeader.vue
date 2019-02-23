@@ -7,21 +7,33 @@
                     enter-active-class="animated slideInRight faster"
                     leave-active-class="animated slideOutRight faster">
                 <div class="header-dropdown" v-if="authMenu">
-                    <div>
-                        <div class="header-dropdown-title">Hey, {{user}}</div>
-                        <div class="header-dropdown-avatar">
-                            <img src="../assets/glenn-carstens-peters-190592-unsplash.jpg" alt="">
-                        </div>
-                        <ul class="header-dropdown-list">
-                            <li @click="logout"><fa icon="sign-out-alt"/> Logout</li>
-                        </ul>
+                    <div title="Close" class="header-dropdown-closer" @click="authMenu = false">
+                        <fa icon="chevron-right"/>
                     </div>
-                    <div class="header-dropdown-footer">
+                    <div class="header-dropdown-content">
                         <div>
-                            <a title="Email me" href="mailto: asset.sultan@gmail.com"><i class="icon dark"><fa icon="envelope" /></i></a>
-                            <a title="I'm on Github" href="https://github.com/Assenti" target="_blank"><i class="icon dark"><fa :icon="['fab', 'github']"/></i></a>
+                            <div class="header-dropdown-title">Hey, {{user}}</div>
+                            <div class="header-dropdown-avatar">
+                                <img src="../assets/glenn-carstens-peters-190592-unsplash.jpg" alt="">
+                            </div>
+                            <ul class="header-dropdown-list">
+                                <li @click="logout"><fa icon="sign-out-alt"/> Logout</li>
+                            </ul>
                         </div>
-                        <div>Personal Planner by Asset Sultanov<br>&copy; 2019</div>
+                        <div class="header-dropdown-footer">
+                            <div>
+                                <a href="mailto: asset.sultan@gmail.com">
+                                    <i class="tooltip icon light" data-tooltip="Email me"><fa icon="envelope" /></i>
+                                </a>
+                                <a href="https://github.com/Assenti" target="_blank">
+                                    <i class="icon light tooltip" data-tooltip="I'm on Github"><fa :icon="['fab', 'github']"/></i>
+                                </a>
+                                <a href="https://linkedin.com/in/asset-sultanov-developer/" target="_blank">
+                                    <i class="icon light tooltip" data-tooltip="I'm on LinkedIn"><fa :icon="['fab', 'linkedin']"/></i>
+                                </a>
+                            </div>
+                            <div>Personal Planner by Asset Sultanov<br>&copy; 2019</div>
+                        </div>
                     </div>
                 </div>
             </transition>

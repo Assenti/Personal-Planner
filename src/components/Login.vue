@@ -101,7 +101,7 @@ export default {
             if(err.response.status == 401) {
                 this.error = 'WRONG LOGIN OR PASSWORD'
             }
-            else if(err.code === 'ECONABORTED') {
+            else if(err.code === 'ECONNABORTED') {
                 this.error = 'SERVER NOT RESPONSE'
             }
             else {

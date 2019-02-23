@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const config = require('../config')
-mongoose.connect(config.mongoURI, { useNewUrlParser: true })
 
 const TodoSchema = mongoose.Schema({
 	title: String,

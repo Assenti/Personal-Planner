@@ -3,11 +3,11 @@
         <div class="todo-item-inner">
             <div class="todo-item-left">
                 <label data-tooltip="Mark as done" class="input-checkbox tooltip is-tooltip-right">
-                    <input :id="todo._id" type="checkbox" v-model="completed" @change="doneEdit">
+                    <input :id="todo._id" type="checkbox" v-model="completed" @change="setUnsetCompleted">
                     <label :for="todo._id"></label>
                 </label>
                 <label data-tooltip="Mark as important" class="input-checkbox-flag tooltip is-tooltip-right">
-                    <input type="checkbox" v-model="important" @change="doneEdit">
+                    <input type="checkbox" v-model="important" @change="setUnsetImportant">
                     <fa :class="{red: important }" icon="flag" class="icon-sm" />
                 </label>
                 <i class="todo-date">EffDate: {{ dateFormat(effDate) }}</i>
@@ -102,14 +102,34 @@ export default {
       if(this.title == ''){
         this.title = this.beforeEditCache
       }
-      this.editing = false;
-      this.$emit('finishedEdit', {
-        '_id': this.todo._id,
-        'title': this.title,
-        'completed': this.completed,
-        'important': this.important,
-        'editing': this.editing
-      })
+      this.editing = false
+
+      let data = {
+        _id: this.todo._id,
+        title: this.title,
+        important: this.important,
+        editing: this.editing
+      }
+
+      this.$emit('finishedEdit', data)
+    },
+
+    setUnsetCompleted() {
+      let data = {
+        _id: this.todo._id,
+        completed: this.completed
+      }
+
+      this.$emit('setUnsetCompleted', data)
+    },
+
+    setUnsetImportant() {
+      let data = {
+        _id: this.todo._id,
+        important: this.important
+      }
+
+      this.$emit('setUnsetImportant', data)
     },
 
     cancelEdit() {

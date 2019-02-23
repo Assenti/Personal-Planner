@@ -10,8 +10,9 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser, faKey, faEnvelope, faClipboardList,
 faFlag, faSearch, faShareAlt, faTimes, faSignOutAlt,
 faCalendarAlt, faTrashAlt, faCheckCircle, faPlusCircle,
-faEye, faListUl, faExclamationCircle, faArrowsAlt } from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp, faGithub } from '@fortawesome/free-brands-svg-icons'
+faEye, faListUl, faExclamationCircle, faArrowsAlt,
+faChevronRight} from '@fortawesome/free-solid-svg-icons'
+import { faWhatsapp, faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { setupCalendar, DatePicker } from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css'
@@ -22,7 +23,7 @@ library.add(faWhatsapp, faUser, faKey, faEnvelope, faGithub,
 faClipboardList, faFlag, faSearch, faShareAlt, faTimes,
 faSignOutAlt, faCalendarAlt, faTrashAlt, faCheckCircle,
 faPlusCircle, faEye, faListUl, faExclamationCircle,
-faArrowsAlt)
+faArrowsAlt, faChevronRight, faLinkedin)
 
 setupCalendar({
     firstDayOfWeek: 2,  // Monday

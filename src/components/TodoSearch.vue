@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-slim">
                     <div class="form-field">
-                        <label>Input phone (10 digits, without '8' or '+7')</label>
+                        <label style="opacity: 1">Input phone number (10 digits, without '8' or '+7')</label>
                         <fa :icon="['fab', 'whatsapp']"/>
                         <masked-input class="input"
                             v-focus
@@ -136,8 +136,8 @@ export default {
 
         todoList () {
             let raw = ''
-            for(let i = 0; i < this.todos.length; i++){
-                raw += i+1 + ') ' + this.todos[i].title + '; '
+            for(let i = 0; i < this.$store.state.todos.length; i++){
+                raw += i+1 + ') ' + this.$store.state.todos[i].title + '; '
             }
             return raw
         }

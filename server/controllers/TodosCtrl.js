@@ -58,9 +58,47 @@ exports.editTodo = (req, res) => {
             res.sendStatus(500)
         }
         else {
-            if(req.body.title) todo.title = req.body.title 
-            if(req.body.completed) todo.completed = req.body.completed
-            if(req.body.important) todo.important = req.body.important
+            todo.title = req.body.title 
+            todo.save((err, todo)=> {
+                if(err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                }
+                else res.send(todo)
+            })
+        }
+    })
+}
+
+exports.setUnsetCompleted = (req, res) => {
+    Todo.findOne({ _id: req.query._id })
+    .exec((err, todo)=> {
+        if(err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+        else {
+            todo.completed = req.query.completed
+            todo.save((err, todo)=> {
+                if(err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                }
+                else res.send(todo)
+            })
+        }
+    })
+}
+
+exports.setUnsetImportant = (req, res) => {
+    Todo.findOne({ _id: req.query._id })
+    .exec((err, todo)=> {
+        if(err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+        else {
+            todo.important = req.query.important
             todo.save((err, todo)=> {
                 if(err) {
                     console.log(err)

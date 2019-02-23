@@ -6,6 +6,8 @@ const cors = require('cors')
 const morgan = require('morgan')
 const config = require('./server/config')
 const routes = require('./server/routes')
+const mongoose = require('mongoose')
+mongoose.connect(config.mongoURI, { useNewUrlParser: true })
 
 const app = express()
 app.use(express.static(path.join(__dirname, 'dist')))

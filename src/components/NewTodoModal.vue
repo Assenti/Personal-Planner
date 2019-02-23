@@ -96,13 +96,8 @@ export default {
                 timeout: 5000
             })
             .then(response => {
-                bus.$emit('updateTodos', response.data)
-                 this.message = 'ADDED'
-                 this.status = 'success'
-                 setTimeout(() => {
-                     this.message = ''
-                     this.status = ''
-                 }, 3000)
+                bus.$emit('addTodo', response.data)
+                this.closeModal()
             })
             .catch(err => {
                 if(err.response.status == 403) {

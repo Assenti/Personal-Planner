@@ -7,7 +7,6 @@
                     @checkAllChanged="checkAllTodos" />
         
         <div class="todo-content">
-            <fa class="todo-content-bg" icon="clipboard-list"/>
             <draggable v-model="todosFiltered"
                     :options="{animation: 200, handle: '.todo-item-grab'}" 
                     @start="drag=true" 
@@ -18,6 +17,8 @@
                     :index="index"
                     :chosenTodoId="chosenTodoId"
                     @unchosen="unchooseTodo"
+                    @setUnsetCompleted="setUnsetCompleted"
+                    @setUnsetImportant="setUnsetImportant"
                     @removedTodo="removeTodo"
                     @finishedEdit="finishedEdit"
                     :checkAll="!anyRemaining" />
@@ -45,7 +46,6 @@
 
 <script>
 import Item from './Item'
-import Topnav from './Topnav'
 import Total from './Total'
 import axios from 'axios'
 import Api from '@/services/ApiService'
@@ -57,7 +57,6 @@ export default {
     name: 'todo',
     components: {
         Item,
-        Topnav,
         Total,
         Draggable,
         TodoSearch
@@ -98,8 +97,14 @@ export default {
             this.filter = data
         })
 
-        bus.$on('updateTodos', (data) => {
-            this.todos = data
+        bus.$on('updateTodos', (newTodos) => {
+            this.todosFiltered = newTodos
+            this.$store.dispatch('setTodos', newTodos)
+        })
+
+        bus.$on('addTodo', (newTodo) => {
+            this.todosFiltered.push(newTodo)
+            this.$store.dispatch('setTodos', this.todosFiltered)
         })
 
     },
@@ -157,117 +162,156 @@ export default {
         }
     },
 
-  methods: {
-      getTodos() {
-          if(this.$store.getters.loggedIn) {
+    methods: {
+        getTodos() {
+            if(this.$store.getters.loggedIn) {
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+                axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`)
+                .then(response => {
+                    console.log(response.data)
+                    this.todos = response.data
+                    this.$store.dispatch('setTodos', response.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            } 
+        },
+
+        navigateTo(path) {
+            this.$router.push(path)
+        },
+
+        setFilter (prop) {
+            this.filter = prop
+        },
+
+        removeTodo(id) {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`)
-            .then(response => {
-                console.log(response.data)
-                this.todos = response.data
-                this.$store.dispatch('setTodos', response.data)
+            
+            axios.delete(`${Api.host}/api/deleteTodo?todoId=${id}`)
+            .then(reponse => {
+                this.todos = this.todos.filter(todo => {
+                    return todo._id !== id
+                })
+                this.error = ''
             })
             .catch(err => {
-                console.log(err)
+                if(err.response.status == 403) {
+                    this.authError = err.response.data
+                    this.$store.dispatch('unsetSession')
+                } 
+                else {
+                    this.error = 'ERROR'
+                    setTimeout(() => {
+                        this.error = ''
+                    }, 3000)
+                }
             })
-        } 
-      },
+        },
 
-    navigateTo(path) {
-      this.$router.push(path)
-    },
-
-    setFilter (prop) {
-      this.filter = prop
-    },
-
-    removeTodo(id) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-        
-        axios.delete(`${Api.host}/api/deleteTodo?todoId=${id}`)
-        .then(reponse => {
-            this.todos = this.todos.filter(todo => {
-                return todo._id !== id
-            })
-            this.error = ''
-        })
-        .catch(err => {
-            if(err.response.status == 403) {
-                this.authError = err.response.data
-                this.$store.dispatch('unsetSession')
-            } 
-            else {
-                this.error = 'ERROR'
-                setTimeout(() => {
-                    this.error = ''
-                }, 3000)
+        setUnsetCompleted(data) {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            let editingData = {
+                _id: data._id,
+                completed: data.completed
             }
-        })
-    },
 
-    finishedEdit (data) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-        let editingData = {
-            _id: data._id,
-            title: data.title,
-            completed: data.completed,
-            important: data.important
+            axios.get(`${Api.host}/api/setUnsetCompleted?_id=${data._id}&completed=${data.completed}`)
+            .then(response => {
+                console.log(response.data)
+                let index = this.todos.findIndex((todo) => todo._id == data._id)
+                this.todos.splice(index, 1, response.data)
+                this.error = ''
+            })
+            .catch(err => {
+                if(err.response.status == 403) {
+                    this.authError = err.response.data
+                    this.$store.dispatch('unsetSession')
+                } 
+                else this.error = 'ERROR'
+            })
+        },
+
+        setUnsetImportant(data) {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            axios.get(`${Api.host}/api/setUnsetImportant?_id=${data._id}&important=${data.important}`)
+            .then(response => {
+                console.log(response.data)
+                let index = this.todos.findIndex((todo) => todo._id == data._id)
+                this.todos.splice(index, 1, response.data)
+                this.error = ''
+            })
+            .catch(err => {
+                if(err.response.status == 403) {
+                    this.authError = err.response.data
+                    this.$store.dispatch('unsetSession')
+                } 
+                else this.error = 'ERROR'
+            })
+        },
+
+        finishedEdit (data) {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            let editingData = {
+                _id: data._id,
+                title: data.title
+            }
+
+            axios.put(`${Api.host}/api/editTodo`, editingData)
+            .then(response => {
+                console.log(response.data)
+                let index = this.todos.findIndex((todo) => todo._id == data._id)
+                this.todos.splice(index, 1, response.data)
+                this.error = ''
+            })
+            .catch(err => {
+                if(err.response.status == 403) {
+                    this.authError = err.response.data
+                    this.$store.dispatch('unsetSession')
+                } 
+                else this.error = err.response.data
+            })
+        },
+
+        checkAllTodos(checked) {
+            this.todos.forEach((todo) => todo.completed = event.target.checked)
+        },
+
+        deleteCompleted() {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            axios.put(`${Api.host}/api/deleteCompleted`, {
+                todos: this.todos.filter(todo => todo.completed)
+            })
+            .then(response => {
+                this.todos = this.todos.filter(todo => !todo.completed)
+                this.error = ''
+            })
+            .catch(err => {
+                if(err.response.status == 403) {
+                    this.authError = err.response.data
+                    this.$store.dispatch('unsetSession')
+                } 
+                else this.error = err.response.data
+            })
+        },
+
+        showLabel (id) {
+            document.getElementById(id).style.opacity = '1';
+        },
+
+        hideLabel (id) {
+            document.getElementById(id).style.opacity = '0';
+        },
+
+        chooseTodo (id) {
+            this.chosenTodoId = id
+        },
+
+        unchooseTodo () {
+            this.chosenTodoId = ''
         }
-        axios.put(`${Api.host}/api/editTodo`, editingData)
-        .then(response => {
-            const index = this.todos.findIndex((todo) => todo._id == data._id)
-            this.todos.splice(index, 1, response.data)
-            this.error = ''
-        })
-        .catch(err => {
-            if(err.response.status == 403) {
-                this.authError = err.response.data
-                this.$store.dispatch('unsetSession')
-            } 
-            else this.error = err.response.data
-        })
-    },
-
-    checkAllTodos(checked) {
-      this.todos.forEach((todo) => todo.completed = event.target.checked)
-    },
-
-    async deleteCompleted() {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-      axios.put(`${Api.host}/api/todo/deletecompleted`, {
-        todos: this.todos.filter(todo => todo.completed)
-      })
-      .then(response => {
-        if(response.status == 200) {
-          this.todos = this.todos.filter(todo => !todo.completed)
-          this.error = ''
-        }
-      })
-      .catch(err => {
-        if(err.response.status == 403) {
-          this.authError = err.response.data
-          this.$store.dispatch('unsetSession')
-        } 
-        else this.error = err.response.data
-      })
-    },
-
-    showLabel (id) {
-      document.getElementById(id).style.opacity = '1';
-    },
-
-    hideLabel (id) {
-      document.getElementById(id).style.opacity = '0';
-    },
-
-    chooseTodo (id) {
-      this.chosenTodoId = id
-    },
-
-    unchooseTodo () {
-      this.chosenTodoId = ''
     }
-  }
 }
 </script>
-    
+        
