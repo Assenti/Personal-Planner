@@ -14,8 +14,9 @@
                         <div>
                             <div class="header-dropdown-title">Hey, {{user}}</div>
                             <div class="header-dropdown-avatar">
-                                <img src="../assets/glenn-carstens-peters-190592-unsplash.jpg" alt="">
+                                <avatar />
                             </div>
+                            <div class="error" v-if="error">{{error}}</div>
                             <ul class="header-dropdown-list">
                                 <li @click="logout"><fa icon="sign-out-alt"/> Logout</li>
                             </ul>
@@ -42,17 +43,27 @@
 </template>
 
 <script>
+import Avatar from '@/components/Avatar'
 import { bus } from '@/main'
 import axios from 'axios'
 import Api from '@/services/ApiService'
 
 export default {
     name: 'app-header',
+    components: {
+        Avatar
+    },
     data() {
         return {
             authMenu: false,
-            user: this.$store.state.user.firstname
+            user: this.$store.state.user.firstname,
+            error: ''
         }
+    },
+    created() {
+        bus.$on('error', (error) => {
+            this.error = error
+        })
     },
     methods: {
         logout () {

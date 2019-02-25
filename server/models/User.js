@@ -11,8 +11,8 @@ const UserSchema = mongoose.Schema({
 	date: {type: Date, default: Date.now }
 })
 
-UserSchema.pre('save', (next) => {
-	let user = this
+UserSchema.pre('save', function (next) {
+	var user = this;
 	if(!user.isModified('password')){
 		return next()
 	}

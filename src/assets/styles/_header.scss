@@ -13,8 +13,19 @@
 }
 
 .header-title {
-    font-size: 2em;
     color: $light;
+}
+
+@media (min-width: 451px) {
+    .header-title {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 450px) {
+    .header-title {
+        font-size: 1.5em;
+    }
 }
 
 .header-dropdown {

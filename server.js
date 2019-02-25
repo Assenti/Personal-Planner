@@ -7,7 +7,14 @@ const morgan = require('morgan')
 const config = require('./server/config')
 const routes = require('./server/routes')
 const mongoose = require('mongoose')
-mongoose.connect(config.mongoURI, { useNewUrlParser: true })
+
+try {
+    mongoose.connect(config.mongoURI, { useNewUrlParser: true })
+}
+catch(e) {
+    console.log(e)
+    throw new Error('Mongo connection error: ' + e)
+}
 
 const app = express()
 app.use(express.static(path.join(__dirname, 'dist')))

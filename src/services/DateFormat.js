@@ -1,8 +1,7 @@
 export default {
     dateTime(date) {
         let splitted = date.split(/\T|\./)
-        console.log(splitted)
-        return `${splitted[0]} ${splitted[1]}`
+        return `${splitted[0]}, ${splitted[1]}`
     },
 
     date(date) {

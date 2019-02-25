@@ -54,14 +54,6 @@ export default {
             let el = document.getElementById('deleteComp')
             el.style.animationName = 'slide-left';
             this.$emit('deleteAllCompleted')
-        },
-
-        showLabel(id) {
-            document.getElementById(id).style.opacity = '1';
-        },
-
-        hideLabel(id) {
-            document.getElementById(id).style.opacity = '0';
         }
     }
 }

@@ -80,13 +80,12 @@
 	text-align: center;
 	padding: 5px;
 	margin: 0 2px;
-	font-size: 14px;
 	color: $light;
 	cursor: pointer;
-	border: 2px solid transparent;
+	border-style: solid;
 	border-radius: 3px;
-	min-width: 50px;
-
+	border-color: transparent;
+	
 	&:hover {
 		border-color: $light;
 		transition: .3s ease-in;
@@ -94,5 +93,21 @@
 
 	&.active {
 		border-color: $light;
+	}
+}
+
+@media (min-width: 451px) {
+	.filter-btn {
+		font-size: 14px;
+		min-width: 50px;
+		border-width: 2px;
+	}
+}
+
+@media (max-width: 450px) {
+	.filter-btn {
+		font-size: 12px;
+		min-width: 35px;
+		border-width: 1px;
 	}
 }

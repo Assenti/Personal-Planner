@@ -24,7 +24,10 @@ export default new Vuex.Store({
         },
         setTodos(state, data) {
             state.todos = data
-        }
+		},
+		setAvatar(state, data) {
+			state.user = data
+		}
 	},
 	actions: {
 		setSession(context, credentials) {
@@ -39,6 +42,13 @@ export default new Vuex.Store({
         
         setTodos(context, credentials) {
             context.commit('setTodos', credentials)
-        }
+		},
+		
+		setAvatar(context, credentials) {
+			let user = JSON.parse(localStorage.getItem('user'))
+			user.avatar = credentials
+			localStorage.setItem('user', JSON.stringify(user))
+			context.commit('setAvatar', user)
+		}
 	}
 })

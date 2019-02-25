@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
+const upload = multer({dest: 'uploads/'})
 const AuthCtrl = require('../controllers/AuthCtrl')
 const TodosCtrl = require('../controllers/TodosCtrl')
 const JwtService = require('../services/JwtService')
+const AvatarCtrl = require('../controllers/AvatarCtrl')
 const SendCtrl = require('../controllers/SendCtrl')
 
 router.post('/signin', AuthCtrl.signin)
@@ -28,5 +31,9 @@ router.put('/deleteCompleted', TodosCtrl.deleteCompleted)
 router.delete('/deleteTodo', TodosCtrl.deleteTodo)
 
 router.post('/sendToEmail', SendCtrl.sendToEmail)
+
+router.post('/setAvatar', upload.single('file'), AvatarCtrl.setAvatar)
+
+router.get('/deleteAvatar', AvatarCtrl.deleteAvatar)
 
 module.exports = router

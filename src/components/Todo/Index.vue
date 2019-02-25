@@ -1,12 +1,12 @@
 <template>
     <div class="todo">
 
-        <div class="error" v-if="error">{{ error }}</div>
-
         <todo-search :anyRemaining="anyRemaining"
                     @checkAllChanged="checkAllTodos" />
         
         <div class="todo-content">
+            <div class="error" v-if="error">{{ error }}</div>
+            <i v-if="error" class="icon dark tooltip is-tooltip-bottom" data-tooltip="Refresh" @click="getTodos()"><fa icon="sync-alt"/></i>
             <draggable v-model="todosFiltered"
                     :options="{animation: 200, handle: '.todo-item-grab'}" 
                     @start="drag=true" 
@@ -40,7 +40,13 @@
                 <button class="btn primary" @click="navigateTo('/')">Login</button>
                 </div>
             </div>
-        </div>    
+        </div>
+
+        <div class="modal-wrapper" v-if="todoDetails">
+            <div class="backdrop" @click="todoDetails = false"></div>
+            <todo-details class="animated fadeInDown fast" :todo="todoDetail" />
+        </div>
+
     </div>
 </template>
 
@@ -51,6 +57,7 @@ import axios from 'axios'
 import Api from '@/services/ApiService'
 import Draggable from 'vuedraggable'
 import TodoSearch from '@/components/TodoSearch'
+import TodoDetails from '@/components/TodoDetails'
 import { bus } from '@/main'
 
 export default {
@@ -59,7 +66,8 @@ export default {
         Item,
         Total,
         Draggable,
-        TodoSearch
+        TodoSearch,
+        TodoDetails
     },  
     data () {
         return {
@@ -71,30 +79,23 @@ export default {
             authError: '',
             search: '',
             chosenTodoId: '',
-            attrs: [
-                {
-                    key: 'today',
-                    highlight: {
-                        backgroundColor: '#ffd300',
-                        // Other properties are available too, like `height` & `borderRadius`
-                    },
-                    contentStyle: {
-                        color: '#4d4d4d',
-                        fontSize: '16px',
-                        fontWeight: 'bold'
-                    },
-                    popover: {
-                        label: 'You just hovered over today\'s date!',
-                    },
-                    dates: new Date()
-                }
-            ],
+            todoDetails: false,
+            todoDetail: ''
         }
     },
 
     created() {
         bus.$on('filterTodos', (data) => {
             this.filter = data
+        })
+
+        bus.$on('openTodoDetails', (todo) => {
+            this.todoDetails = true
+            this.todoDetail = todo
+        })
+
+        bus.$on('closeTodoDetails', () => {
+            this.todoDetails = false
         })
 
         bus.$on('updateTodos', (newTodos) => {
@@ -166,7 +167,8 @@ export default {
         getTodos() {
             if(this.$store.getters.loggedIn) {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-                axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`)
+                axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`,
+                {timeout: 5000 })
                 .then(response => {
                     console.log(response.data)
                     this.todos = response.data
@@ -174,6 +176,9 @@ export default {
                 })
                 .catch(err => {
                     console.log(err)
+                    if(err.code === 'ECONNABORTED') {
+                        this.error = 'Server not response'
+                    }
                 })
             } 
         },

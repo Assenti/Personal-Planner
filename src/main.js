@@ -11,7 +11,7 @@ import { faUser, faKey, faEnvelope, faClipboardList,
 faFlag, faSearch, faShareAlt, faTimes, faSignOutAlt,
 faCalendarAlt, faTrashAlt, faCheckCircle, faPlusCircle,
 faEye, faListUl, faExclamationCircle, faArrowsAlt,
-faChevronRight} from '@fortawesome/free-solid-svg-icons'
+faChevronRight, faInfoCircle, faEdit, faUpload, faSyncAlt} from '@fortawesome/free-solid-svg-icons'
 import { faWhatsapp, faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { setupCalendar, DatePicker } from 'v-calendar'
@@ -22,8 +22,9 @@ import JsonExcel from 'vue-json-excel'
 library.add(faWhatsapp, faUser, faKey, faEnvelope, faGithub,
 faClipboardList, faFlag, faSearch, faShareAlt, faTimes,
 faSignOutAlt, faCalendarAlt, faTrashAlt, faCheckCircle,
-faPlusCircle, faEye, faListUl, faExclamationCircle,
-faArrowsAlt, faChevronRight, faLinkedin)
+faPlusCircle, faEye, faListUl, faExclamationCircle, faEdit,
+faArrowsAlt, faChevronRight, faLinkedin, faInfoCircle,
+faUpload, faSyncAlt)
 
 setupCalendar({
     firstDayOfWeek: 2,  // Monday

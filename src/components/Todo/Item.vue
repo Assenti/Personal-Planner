@@ -29,6 +29,7 @@
                 </span>
             </div>
             <i class="todo-date">ExpDate: {{ dateFormat(expDate) }}</i>
+            <i class="icon dark tooltip is-tooltip-left" @click="openTodoDetails" data-tooltip="Todo Details"><fa icon="info-circle" /></i>            
             <i class="icon dark tooltip is-tooltip-left" @click="removeTodo" data-tooltip="Remove"><fa icon="trash-alt" /></i>
         </div>
         
@@ -37,6 +38,8 @@
 </template>
 
 <script>
+import { bus } from '@/main'
+
 export default {
   name: 'item',
   props: {
@@ -142,12 +145,16 @@ export default {
     },
 
     textSegment(text) {
-        if(text.length >= 38) {
-            return `${text.substr(0, 38)}...`
+        if(text.length >= 30) {
+            return `${text.substr(0, 30)}...`
         }
         else {
             return text
         }        
+    },
+
+    openTodoDetails() {
+      bus.$emit('openTodoDetails', this.todo)
     }
   }
 }

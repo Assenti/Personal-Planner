@@ -23,9 +23,9 @@
                 <fa icon="calendar-alt"/>
                 <date-picker class="input"
                     mode="single"
+                    :min-date="new Date()"
                     popover-visibility="focus" 
-                    v-model="todoDate"
-                    placeholder="What needs to be done?" />
+                    v-model="todoDate" />
             </div>
 
             <div class="form-field relative">
