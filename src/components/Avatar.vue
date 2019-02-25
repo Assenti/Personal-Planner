@@ -105,10 +105,11 @@ export default {
 
         deleteAvatar () {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.get(`${Api.host}/api/deleteAvatar?userId=${this.$store.state.user._id}`)
+            axios.get(`${Api.host}/api/deleteAvatar?userId=${this.$store.state.user._id}&file=${this.$store.state.user.avatar}`)
             .then(response => {
                 this.$store.dispatch('setAvatar', response.data)
                 this.changing = false
+                bus.$emit('error', '')
             })
             .catch(err => {
                 console.log(err)

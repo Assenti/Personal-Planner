@@ -39,13 +39,23 @@ exports.deleteAvatar = (req, res) => {
             console.log(err)
         }
         else {
-            user.avatar = ''
-            user.save((err, user) => {
-                if(err) { 
+            let file = req.query.file.split('/')
+            
+            fs.unlink(path.resolve(__dirname, `../../public/uploads/${file[2]}`), (err)=> {
+                if(err) {
                     console.log(err)
-                    res.sendStatus(500) 
-                }	
-                else res.send(user.avatar)
+                    res.sendStatus(500)
+                }
+                else {
+                    user.avatar = ''
+                    user.save((err, user) => {
+                        if(err) { 
+                            console.log(err)
+                            res.sendStatus(500) 
+                        }	
+                        else res.send(user.avatar)
+                    })
+                }
             })
         }
     })

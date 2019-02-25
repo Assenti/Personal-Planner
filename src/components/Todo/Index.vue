@@ -5,8 +5,17 @@
                     @checkAllChanged="checkAllTodos" />
         
         <div class="todo-content">
-            <div class="error" v-if="error">{{ error }}</div>
-            <i v-if="error" class="icon dark tooltip is-tooltip-bottom" data-tooltip="Refresh" @click="getTodos()"><fa icon="sync-alt"/></i>
+            <div class="error" v-if="error && !loading && todos.length == 0">{{ error }}</div>
+            <div class="form-controls relative" v-if="error && loading && todos.length == 0">
+                <div class="lds-facebook">
+                    <div style="background: #527a7a"></div>
+                    <div style="background: #527a7a"></div>
+                    <div style="background: #527a7a"></div>
+                </div>
+            </div>
+            <div class="form-controls" v-if="error && !loading && todos.length == 0">
+                <i class="icon dark" title="Refresh" @click="getTodos()"><fa icon="sync-alt"/></i>
+            </div>
             <draggable v-model="todosFiltered"
                     :options="{animation: 200, handle: '.todo-item-grab'}" 
                     @start="drag=true" 
@@ -80,7 +89,8 @@ export default {
             search: '',
             chosenTodoId: '',
             todoDetails: false,
-            todoDetail: ''
+            todoDetail: '',
+            loading: false
         }
     },
 
@@ -166,6 +176,7 @@ export default {
     methods: {
         getTodos() {
             if(this.$store.getters.loggedIn) {
+                this.loading = true
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
                 axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`,
                 {timeout: 5000 })
@@ -180,6 +191,7 @@ export default {
                         this.error = 'Server not response'
                     }
                 })
+                .then(() => this.loading = false)
             } 
         },
 
