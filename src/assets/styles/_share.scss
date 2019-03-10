@@ -2,22 +2,23 @@
 
 .share-menu {
     position: absolute;
-    top: 58px;
+    top: 50px;
     right: 0;
-    background-color: $cus-green;
+    background-color: $light;
     white-space: nowrap;
+    min-width: 250px;
     z-index: 50;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
 
     & > div {
         position: absolute;
         top: -8px;
-        right: calc(50% - 10px);
+        right: 60px;
         width: 0; 
         height: 0; 
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
-        border-bottom: 10px solid $cus-green;
+        border-bottom: 10px solid $light;
     }
 
     & > li {
@@ -25,8 +26,8 @@
         padding: 10px 15px;
         font-size: .9em;
         cursor: pointer;
-        color: $light;
-        border-bottom: 1px solid $light;
+        color: $dark;
+        border-bottom: 1px dotted grey;
     }
 
     & > li:last-child {
@@ -34,7 +35,7 @@
     }
 
     & > li:hover {
-        color: $yellow;
-        text-decoration: underline $yellow;
+        color: cornflowerblue;
+        text-decoration: underline cornflowerblue;
     }
 }

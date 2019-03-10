@@ -18,7 +18,8 @@
             </div>
             <draggable v-model="todosFiltered"
                     :options="{animation: 200, handle: '.todo-item-grab'}" 
-                    @start="drag=true" 
+                    @start="drag=true"
+                    @update="setOrder" 
                     @end="drag=false">
                 <item v-for="(todo, index) in todosFiltered"
                     :key="todo._id" 
@@ -181,8 +182,7 @@ export default {
                 axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`,
                 {timeout: 5000 })
                 .then(response => {
-                    console.log(response.data)
-                    this.todos = response.data
+                    this.todos = response.data.sort((a, b) => {return a.order - b.order})
                     this.$store.dispatch('setTodos', response.data)
                 })
                 .catch(err => {
@@ -327,6 +327,23 @@ export default {
 
         unchooseTodo () {
             this.chosenTodoId = ''
+        },
+
+        setOrder() {
+            let todos = this.todosFiltered.map((todo, index) => {
+                return {
+                    _id: todo._id,
+                    order: index
+                }
+            })
+
+            axios.post(`${Api.host}/api/setOrder`, { todos: todos })
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
         }
     }
 }

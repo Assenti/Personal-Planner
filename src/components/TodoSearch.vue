@@ -97,6 +97,7 @@ export default {
             todos: this.$store.state.todos,
             todosFields: {
                 "Todo": "title",
+                "Priority": "important",
                 "EffDate": {
                     field: "date",
                     callback: (date) => {

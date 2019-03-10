@@ -34,6 +34,8 @@ router.put('/deleteCompleted', TodosCtrl.deleteCompleted)
 
 router.delete('/deleteTodo', TodosCtrl.deleteTodo)
 
+router.post('/setOrder', TodosCtrl.setOrder)
+
 router.post('/sendToEmail', SendCtrl.sendToEmail)
 
 router.post('/setAvatar', upload.single('file'), AvatarCtrl.setAvatar)

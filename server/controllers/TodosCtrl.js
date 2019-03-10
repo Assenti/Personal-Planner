@@ -135,3 +135,15 @@ exports.deleteTodo = (req, res) => {
     })
 }
 
+exports.setOrder = (req, res) => {
+    for(const todo of req.body.todos) {
+        Todo.updateOne({_id: todo._id}, { $set: { order: todo.order }}, (err, result) => {
+            if(err) {
+                console.log(err)
+            }
+        })
+    }
+    res.sendStatus(200)
+}
+
+
