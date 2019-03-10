@@ -26,6 +26,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
+    "keygenerator": "^1.0.4",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.11",
     "morgan": "^1.9.1",
@@ -33,7 +34,7 @@
     "nodemailer": "^5.1.1",
     "v-calendar": "^0.9.7",
     "vee-validate": "^2.1.7",
-    "vue": "^2.5.22",
+    "vue": "^2.6.8",
     "vue-json-excel": "^0.2.98",
     "vue-masked-input": "^0.5.2",
     "vue-router": "^3.0.1",
@@ -54,7 +55,7 @@
     "node-sass": "^4.9.0",
     "nodemon": "^1.18.10",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.6.8"
   },
   "postcss": {
     "plugins": {

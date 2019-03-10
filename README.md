@@ -35,5 +35,15 @@ npm run test:e2e
 npm run test:unit
 ```
 
+### Run your server on production
+```
+npm start
+```
+
+### Run your server on development mode
+```
+npm run dev
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

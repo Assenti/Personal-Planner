@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Todo from '@/components/Todo/Index.vue'
+import Todo from '@/components/Todo.vue'
 import AppHeader from '@/components/AppHeader.vue'
 
 export default {

@@ -16,7 +16,7 @@
                 placeholder="Input Email...">
             </div>
             <span class="animated shake form-error">{{errors.first('email')}}</span>
-            <div class="form-field">
+            <div class="form-field" v-if="!resetPasswordMenu">
                 <label id="password">Password</label>
                 <fa icon="key" />
                 <input class="input"
@@ -32,21 +32,34 @@
             </div>
             <span class="animated shake form-error">{{errors.first('password')}}</span>
             
-            <div>
+            <div v-if="!resetPasswordMenu" class="flex align-center space-between">
                 <label class="input-rememberme">Remember me
                     <input type="checkbox" v-model="rememberme"><span></span>
                 </label>
+                <div class="link" @click="resetPasswordMenu = true">Forgot your password?</div>
             </div>
             
             <div class="error" v-if="error">{{error}}</div>
+            <div class="success" v-else-if="success">{{success}}</div>
+
             <div class="form-controls relative">
-                <button class="btn cus-green wide" style="margin: 0" type="submit" :disabled="loading">
+                <button v-if="!resetPasswordMenu" class="btn cus-green wide" style="margin: 0" type="submit" :disabled="loading">
                     <span v-if="!loading">Login</span>
+                    <div class="lds-facebook" v-if="loading"><div></div><div></div><div></div></div>
+                </button>
+                <button v-else-if="resetPasswordMenu" 
+                    class="btn cus-green wide" 
+                    style="margin: 0" 
+                    @click.prevent="resetPassword" 
+                    :disabled="!email || loading">
+                    <span v-if="!loading">Reset</span>
                     <div class="lds-facebook" v-if="loading"><div></div><div></div><div></div></div>
                 </button>
     	    </div>
         </form>
-        <div class="hint">Please pass the authorization to start</div>
+        <div class="link centered" v-if="!resetPasswordMenu" @click="goToRegister">Not registered yet?</div>
+        <div class="link centered" v-if="resetPasswordMenu" @click="resetPasswordMenu = false">Go back</div>
+
         <div id="todos-footer">
             <div>
                 <span>Personal Planner by Asset Sultanov</span>
@@ -67,8 +80,10 @@ export default {
         email: '',
         password: '',
         error: '',
+        success: '',
         loading: false,
-        rememberme: false
+        rememberme: false,
+        resetPasswordMenu: false
     }
   },
   methods: {
@@ -116,12 +131,37 @@ export default {
         })
     },
 
+    resetPassword() {
+        this.loading = true
+        axios.get(`${Api.host}/api/resetPassword?email=${this.email}`)
+        .then(response => {
+            console.log(response.data)
+            this.success = 'Password restored! Check your email!'
+        })
+        .catch(err => {
+            console.log(err)
+            if(err.response.status == 406) {
+                this.error = 'Wrong Email address'
+                setTimeout(() => { this.error = '' }, 4000)
+            }
+            else {
+                this.error = 'Server error'
+                setTimeout(() => { this.error = '' }, 4000)
+            }
+        })
+        .then(() => this.loading = false)
+    },
+
     labelShow(id) {
         document.getElementById(id).style.opacity = '1';
     },
 
     labelHide(id) {
         document.getElementById(id).style.opacity = '0';
+    },
+
+    goToRegister() {
+        this.$emit('toRegister')
     }
 
   }

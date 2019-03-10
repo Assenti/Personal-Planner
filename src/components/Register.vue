@@ -74,6 +74,7 @@
           </button>
     	</div>
     </form>
+    <div class="link centered" @click="goToLogin">Already registered?</div>
   </div>
 </template>
 
@@ -142,6 +143,10 @@ export default {
 
     labelHide(id) {
         document.getElementById(id).style.opacity = '0';
+    },
+
+    goToLogin() {
+        this.$emit('toLogin')
     }
 
   }

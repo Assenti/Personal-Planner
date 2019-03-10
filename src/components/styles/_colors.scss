@@ -1,0 +1,40 @@
+$primary: #0086b3;
+// $cus-green: #339966;
+$cus-green: #527a7a;
+$secondary: #e7e7e7;
+$info: #99e6ff;
+$light: #f7f7f7;
+$dark: #4d4d4d;
+$yellow: #ffd300;
+
+.red {
+	color: crimson;
+}
+
+.primary {
+	color: $primary;
+}
+
+.cus-green {
+	color: $cus-green;
+}
+
+.secondary {
+	color: $secondary;
+}
+
+.info {
+	color: $info;
+}
+
+.light {
+	color: $light;
+}
+
+.dark {
+	color: $dark;
+}
+
+.grey {
+	color: grey;
+}

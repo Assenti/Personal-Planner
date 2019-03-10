@@ -14,6 +14,10 @@ router.post('/register', AuthCtrl.register)
 
 router.get('/logout', AuthCtrl.logout)
 
+router.get('/resetPassword', AuthCtrl.resetPassword)
+
+router.post('/changePassword', AuthCtrl.changePassword)
+
 router.get('/getTodos', TodosCtrl.getTodos)
 
 router.get('/search', TodosCtrl.search)

@@ -6,13 +6,14 @@ module.exports = {
     mongoURI: process.env.MONGO,
     jwtSecret: process.env.JWT_SECRET,
     mailConfig: {
-        host: 'smtp.gmail.com',
-        port: 587,
+        host: process.env.MAIL_HOST,
+        port: process.env.MAIL_PORT,
         secure: false, 
         auth: {
             user: process.env.MAIL_USER, 
             pass: process.env.MAIL_PASSWORD   
         }
     },
-    session: '86400000'
+    session: '86400000',
+    bcryptLength: process.env.CRYPT_LENGTH
 }

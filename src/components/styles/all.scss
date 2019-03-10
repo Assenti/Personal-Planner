@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css?family=Play');
+
+* {
+    font-family: 'Play', 'Helvetica', sans-serif;
+    box-sizing: border-box;
+}
+  
+body {
+    margin: 0;
+    padding: 0;
+}
+  
+@import 'colors';
+@import 'auth';
+@import 'backdrop';
+@import 'btn';
+@import 'error';
+@import 'form';
+@import 'hint';
+@import 'icon';
+@import 'input';
+@import 'props';
+@import 'search';
+@import 'share';
+@import 'spinner';
+@import 'todo';
+@import 'calendar';
+@import 'header';
+@import 'dropdown';
+@import 'avatar';
+
+#app,
+#main {
+    height: 100vh;
+    width: 100%;
+}
+
+#main {
+    height: 100vh;
+	width: 100%;
+	background-image: url('../glenn-carstens-peters-190592-unsplash.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+	background-repeat: repeat;
+	z-index: 2;
+}
+
+.important {
+    color: crimson;
+    font-weight: 600;
+    text-decoration: underline;
+    transition: .3s linear;  
+}
+  
+.completed {
+    text-decoration: line-through;
+    color: $cus-green;
+    opacity: .3;
+    transition: .3s linear;  
+}
+
+#currency {
+    padding: 0 5px;
+    text-align: right;
+
+    & > div {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    & > div:first-child {
+        text-transform: none;
+        font-size: 12px;
+        font-weight: normal;
+        margin-right: 10px;
+    }
+
+    i {
+        font-size: 14px;
+        margin-right: 2px;
+    }
+}

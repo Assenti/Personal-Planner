@@ -2,7 +2,11 @@
     <div class="header">
         <div class="header-title">Personal Planner</div>
         <span class="header-item">
-            <i class="icon light" title="Authorization" @click="authMenu = !authMenu"><fa icon="user"/></i>
+            <i class="icon light" title="Authorization" @click="authMenu = !authMenu">
+                <fa icon="user" v-if="!authMenu"/>
+                <fa icon="times" v-if="authMenu"/>
+            </i>
+            
             <transition name="animations"
                     enter-active-class="animated slideInRight faster"
                     leave-active-class="animated slideOutRight faster">
@@ -19,6 +23,7 @@
                             <div class="error" v-if="error">{{error}}</div>
                             <ul class="header-dropdown-list">
                                 <li @click="logout"><fa icon="sign-out-alt"/> Logout</li>
+                                <li @click="changePasswordMenu = true, authMenu = false"><fa icon="key"/> Change password</li>
                             </ul>
                         </div>
                         <div class="header-dropdown-footer">
@@ -39,11 +44,16 @@
                 </div>
             </transition>
         </span>
+        <div class="modal-wrapper" v-if="changePasswordMenu">
+            <div class="backdrop" @click="changePasswordMenu = false"></div>
+            <new-password-modal class="animated fadeInDown fast"/>
+        </div>
     </div>
 </template>
 
 <script>
 import Avatar from '@/components/Avatar'
+import NewPasswordModal from '@/components/NewPasswordModal'
 import { bus } from '@/main'
 import axios from 'axios'
 import Api from '@/services/ApiService'
@@ -51,19 +61,20 @@ import Api from '@/services/ApiService'
 export default {
     name: 'app-header',
     components: {
-        Avatar
+        Avatar,
+        NewPasswordModal
     },
     data() {
         return {
             authMenu: false,
             user: this.$store.state.user.firstname,
-            error: ''
+            error: '',
+            changePasswordMenu: false
         }
     },
     created() {
-        bus.$on('error', (error) => {
-            this.error = error
-        })
+        bus.$on('error', (error) => { this.error = error })
+        bus.$on('closeNewPasswordModal', () => this.changePasswordMenu = false)
     },
     methods: {
         logout () {

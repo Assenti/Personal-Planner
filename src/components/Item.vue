@@ -21,7 +21,7 @@
                     @keyup.esc="cancelEdit" 
                     v-focus />
                 <span :class="{important: important, completed: completed }"
-                    :title="title" 
+                    title="Double click to edit" 
                     v-if="!editing" 
                     @dblclick="editTodo"
                     @mouseover="unchoose">

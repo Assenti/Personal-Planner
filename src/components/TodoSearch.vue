@@ -11,6 +11,7 @@
                 @keyup.escape="search = ''" 
                 v-model="search" 
                 placeholder="Search todo (start typing...)" />
+            <i class="animated fadeIn" @click="search = ''" v-if="search"><fa icon="times" /></i>
         </div>
 
         <i data-tooltip="Share" class="tooltip icon dark" @click="shareMenu = !shareMenu"><fa icon="share-alt" /></i>

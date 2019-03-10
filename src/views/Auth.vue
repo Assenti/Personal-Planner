@@ -8,8 +8,8 @@
                         <span :class="{active: !login}" @click="login = false">Login</span>
                         <span :class="{active: login}" @click="login = true">Register</span>
                     </div>
-                    <login v-if="!login"/>
-                    <register v-if="login"/>
+                    <login v-if="!login" @toRegister="login = true"/>
+                    <register v-else-if="login" @toLogin="login = false"/>
                 </div>
             </div>
         </div>

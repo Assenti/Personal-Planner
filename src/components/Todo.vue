@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import Item from './Item'
-import Total from './Total'
+import Item from '@/components/Item'
+import Total from '@/components/Total'
 import axios from 'axios'
 import Api from '@/services/ApiService'
 import Draggable from 'vuedraggable'
