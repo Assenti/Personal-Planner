@@ -71,3 +71,12 @@
         color: $light;
     }
 }
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    min-height: 150px;
+}

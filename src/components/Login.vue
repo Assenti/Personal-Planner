@@ -1,6 +1,6 @@
 <template>
     <div class="auth-block animated fadeIn">
-        <div class="auth-block__title">Login</div>
+        <div class="auth-block__title">{{title}}</div>
         <form class="form-slim" @submit.prevent="validateBeforeSubmit">
             <div class="form-field">
                 <label id="email">Email</label>
@@ -85,6 +85,12 @@ export default {
         rememberme: false,
         resetPasswordMenu: false
     }
+  },
+  computed: {
+      title() {
+          if(this.resetPasswordMenu) return 'Reset password'
+          else return 'Login'
+      }
   },
   methods: {
     validateBeforeSubmit() {

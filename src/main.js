@@ -6,6 +6,7 @@ import { sync } from 'vuex-router-sync'
 import VeeValidate from 'vee-validate'
 import './assets/styles/all.scss'
 import 'animate.css'
+import 'preloader-js/assets/css/preloader.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser, faKey, faEnvelope, faClipboardList,
 faFlag, faSearch, faShareAlt, faTimes, faSignOutAlt,

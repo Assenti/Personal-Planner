@@ -57,6 +57,10 @@
             <todo-details class="animated fadeInDown fast" :todo="todoDetail" />
         </div>
 
+        <div class="preloader" v-if="loading">
+            <div class="animation animation-rotating-square"></div>
+        </div>
+
     </div>
 </template>
 

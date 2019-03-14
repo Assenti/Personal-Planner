@@ -7,50 +7,34 @@ const MAIL = `"Personal Planner" <${config.mailConfig.auth.user}>`
 
 
 exports.sendToEmail = (req, res) => {
-	jwt.verify(req.token, config.jwtSecret, (err, authData) => {
-		if(err) {
-            console.log(err)
-            res.sendStatus(403)
-        }
-		else {
-			Todo.find({ user: req.body.userId })
-			.populate('user')
-			.exec((err, todos) => {
-				if(err) {
-					console.log(err)
-					res.sendStatus(500)
-				}
-				else {
-					let currentDate = new Date()
-					let content = ''
-					let activeTodos = 0
-					for(let i = 0; i < todos.length; i++){
-						if(!todos[i].completed) {
-							activeTodos++
-							content += i+1 + ') ' + todos[i].title + '; '
-						}
-					}
-					
-					let mailOptions = {
-						from: MAIL, 
-						to: todos[0].user.email, 
-						subject: `Todo List on ${ currentDate.toDateString() }`, 
-						html: `<p>You have ${ activeTodos } items in todo list</p>
-							<p>Todo list for ${ currentDate.toDateString() }</p>
-							<p>${ content }</p>`
-					}
-					transporter.sendMail(mailOptions, (error, info)=> {
-						if(error) {
-                            console.log(error)
-                            res.sendStatus(401)
-                        }
-						else {
-                            console.log(info)
-                            res.sendStatus(200)
-                        }
-					})
-				}
-			})
-		}
-	})
+	let currentDate = req.body.currentDate
+	let todosLenght = req.body.todos.length
+	let content = req.body.todos.toString().replace(/,/g, ';<br>')
+	let email = req.body.email
+
+	let mailOptions = {
+		from: MAIL, 
+		to: email, 
+		subject: `Todo List on ${ currentDate }`, 
+		html: `<p><strong>Todo list for ${ currentDate }</strong></p>
+			<p>You have <strong>${ todosLenght }</strong> items in todo list</p>
+			<p>${ content }</p>`
+	}
+
+	if(req.body.currentDate && req.body.todos && req.body.email) {
+		transporter.sendMail(mailOptions, (error, info)=> {
+			if(error) {
+				console.log(error)
+				res.sendStatus(401)
+			}
+			else {
+				console.log(info)
+				res.sendStatus(200)
+			}
+		})
+	}
+	else {
+		res.sendStatus(401)
+	}
+	
 }

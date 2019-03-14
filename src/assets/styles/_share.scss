@@ -5,10 +5,18 @@
     top: 50px;
     right: 0;
     background-color: $light;
+    border: .5px solid $cus-green;
     white-space: nowrap;
     min-width: 250px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     z-index: 50;
     box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+    animation: menu-anim .1s ease-in;
+    -webkit-animation: menu-anim .1s ease-in;
+    -moz-animation: menu-anim .1s ease-in;
+    -o-animation: menu-anim .1s ease-in;
 
     & > div {
         position: absolute;
@@ -27,7 +35,7 @@
         font-size: .9em;
         cursor: pointer;
         color: $dark;
-        border-bottom: 1px dotted grey;
+        border-radius: 60px 0 0 60px;
     }
 
     & > li:last-child {
@@ -35,7 +43,13 @@
     }
 
     & > li:hover {
-        color: cornflowerblue;
-        text-decoration: underline cornflowerblue;
+        background-color: $cus-green;
+        color: white;
+        transition: all .2s ease-in-out;
     }
+}
+
+@keyframes menu-anim {
+    0% {transform: translateY(-8%); }
+    100% {transform: translateY(0%); }
 }

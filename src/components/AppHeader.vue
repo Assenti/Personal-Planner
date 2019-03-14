@@ -22,8 +22,8 @@
                             </div>
                             <div class="error" v-if="error">{{error}}</div>
                             <ul class="header-dropdown-list">
-                                <li @click="logout"><fa icon="sign-out-alt"/> Logout</li>
                                 <li @click="changePasswordMenu = true, authMenu = false"><fa icon="key"/> Change password</li>
+                                <li @click="logout"><fa icon="sign-out-alt"/> Logout</li>
                             </ul>
                         </div>
                         <div class="header-dropdown-footer">

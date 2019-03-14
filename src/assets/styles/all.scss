@@ -82,3 +82,20 @@ body {
         margin-right: 2px;
     }
 }
+
+.preloader {
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.animation {
+    position: static !important;
+    margin: 0 !important;
+}
+
+.animation-rotating-square {
+    width: 100px !important;
+    height: 100px !important;
+}

@@ -20,6 +20,10 @@
 		color: white;
 	}
 
+	&.std {
+		min-width: 100px;
+	}
+
 	&.wide {
 		display: block;
 		text-align: center;
