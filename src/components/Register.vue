@@ -79,9 +79,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Api from '@/services/ApiService'
-
 export default {
   name: 'register',
   data () {
@@ -108,7 +105,6 @@ export default {
     },
 
     register() {
-        let self = this
         this.loading = true
         let data = {
             firstname: this.firstname,
@@ -116,19 +112,20 @@ export default {
             email: this.email,
             password: this.password
         }
-        axios.post(`${Api.host}/api/register`, data)
+        
+        this.$http.post(`/register`, data)
         .then((response) => {
-            self.success = response.data
-            self.error = ''
+            this.success = response.data
+            this.error = ''
         })
         .catch((err) => {
             console.log(err)
             if(err.response.status == 406) {
-                self.error = err.response.data
+                this.error = err.response.data
             }  
         })
-        .finally(() => {
-            self.loading = false
+        .then(() => {
+            this.loading = false
         })
     },
 

@@ -56,8 +56,6 @@
 
 <script>
 import { bus } from '@/main'
-import axios from 'axios'
-import Api from '@/services/ApiService'
 
 export default {
     name: 'new-todo-modal',
@@ -84,7 +82,6 @@ export default {
 
         addTodo() {
             if(this.todo.trim().length == 0) return
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             let data = { 
                 title: this.todo,
                 priority: this.todoPriority,
@@ -92,21 +89,18 @@ export default {
                 user: this.$store.state.user._id,
                 order: this.$store.state.todos.length + 1 
             }
-            axios.post(`${Api.host}/api/createTodo`, data, {
-                timeout: 5000
+            this.$http.post(`/createTodo`, data, {
+                timeout: 5000,
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
             })
             .then(response => {
                 bus.$emit('addTodo', response.data)
                 this.closeModal()
             })
             .catch(err => {
-                if(err.response.status == 403) {
-                    this.message = 'Session expired'
-                    this.status = 'error'
-                    this.$store.dispatch('unsetSession')
-                    this.$router.push('/')
-                }
-                else if(err.code === 'ECONABORTED') {
+                if(err.code === 'ECONABORTED') {
                     this.message = 'Server not response'
                     this.status = 'error'
                     setTimeout(() => {
@@ -114,6 +108,12 @@ export default {
                         this.status = ''
                     }, 3000)
                 } 
+                else if(err.response.status == 403) {
+                    this.message = 'Session expired'
+                    this.status = 'error'
+                    this.$store.dispatch('unsetSession')
+                    this.$router.push('/')
+                }
                 else {
                     this.message = 'ERROR'
                     this.status = 'error'

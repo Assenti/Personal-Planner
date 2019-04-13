@@ -6,6 +6,7 @@ import { sync } from 'vuex-router-sync'
 import VeeValidate from 'vee-validate'
 import './assets/styles/all.scss'
 import 'animate.css'
+import axios from 'axios'
 import 'preloader-js/assets/css/preloader.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser, faKey, faEnvelope, faClipboardList,
@@ -31,6 +32,11 @@ setupCalendar({
     firstDayOfWeek: 2,  // Monday
 })
 
+const instance = axios.create({
+    baseURL: 'http://localhost:3000/api',
+    // baseURL: '/api',
+})
+
 export const bus = new Vue()
 
 Vue.component('excel', JsonExcel)
@@ -38,6 +44,7 @@ Vue.component('fa', FontAwesomeIcon)
 Vue.component('date-picker', DatePicker)
 Vue.config.productionTip = false
 Vue.use(VeeValidate)
+Vue.prototype.$http = instance
 
 
 sync(store, router) 

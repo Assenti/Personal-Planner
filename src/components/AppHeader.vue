@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="header-title">Personal Planner</div>
-        <span class="header-item">
+        <div class="header-item">
             <i class="icon light" title="Authorization" @click="authMenu = !authMenu">
                 <fa icon="user" v-if="!authMenu"/>
                 <fa icon="times" v-if="authMenu"/>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </transition>
-        </span>
+        </div>
         <div class="modal-wrapper" v-if="changePasswordMenu">
             <div class="backdrop" @click="changePasswordMenu = false"></div>
             <new-password-modal class="animated fadeInDown fast"/>
@@ -55,8 +55,6 @@
 import Avatar from '@/components/Avatar'
 import NewPasswordModal from '@/components/NewPasswordModal'
 import { bus } from '@/main'
-import axios from 'axios'
-import Api from '@/services/ApiService'
 
 export default {
     name: 'app-header',
@@ -79,7 +77,7 @@ export default {
     methods: {
         logout () {
             this.authMenu = false
-            axios.get(`${Api.host}/api/logout`)
+            this.$http.get('/logout')
             .then(response => {
                 console.log(response.data)
             })

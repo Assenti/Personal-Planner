@@ -46,8 +46,6 @@
 
 <script>
 import { bus } from '@/main'
-import axios from 'axios'
-import Api from '@/services/ApiService'
 
 export default {
     name: 'new-password-modal',
@@ -75,15 +73,17 @@ export default {
 
         changePassword() {
             this.loading = true 
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             let data = { 
                 current: this.current,
                 new: this.newPass,
                 id: this.$store.state.user._id,
                 email: this.$store.state.user.email
             }
-            axios.post(`${Api.host}/api/changePassword`, data, {
-                timeout: 5000
+            this.$http.post('/changePassword', data, {
+                timeout: 5000,
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
             })
             .then(response => {
                 this.message = 'Password successfully changed!'

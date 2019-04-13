@@ -70,9 +70,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Api from '@/services/ApiService'
-
 export default {
   name: 'login',
   data () {
@@ -112,18 +109,18 @@ export default {
             rememberme: this.rememberme
         }
 
-        axios.post(`${Api.host}/api/signin`, data, { timeout: 5000 })
+        this.$http.post('/signin', data, { timeout: 5000 })
         .then(response => {
             this.$store.dispatch('setSession', response.data)
             this.$router.push('/main')
         })
         .catch(err => {
             console.log(err)
-            if(err.response.status == 401) {
-                this.error = 'WRONG LOGIN OR PASSWORD'
-            }
-            else if(err.code === 'ECONNABORTED') {
+            if(err.code === 'ECONNABORTED') {
                 this.error = 'SERVER NOT RESPONSE'
+            }
+            else if(err.response.status == 401) {
+                this.error = 'WRONG LOGIN OR PASSWORD'
             }
             else {
                 this.error = 'SERVER ERROR'
@@ -132,14 +129,14 @@ export default {
                 this.error = ''
             }, 4000)
         })
-        .finally(() => {
+        .then(() => {
             this.loading = false
         })
     },
 
     resetPassword() {
         this.loading = true
-        axios.get(`${Api.host}/api/resetPassword?email=${this.email}`)
+        this.$http.get(`/resetPassword?email=${this.email}`)
         .then(response => {
             console.log(response.data)
             this.success = 'Password restored! Check your email!'

@@ -85,8 +85,6 @@
 
 <script>
 import { bus } from '@/main'
-import axios from 'axios'
-import Api from '@/services/ApiService'
 import NewTodoModal from '@/components/NewTodoModal'
 import DateFormat from '@/services/DateFormat'
 import MaskedInput from 'vue-masked-input' 
@@ -182,7 +180,6 @@ export default {
         },
 
         sendViaEmail() {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             let today = new Date()
             let _todos = this.$store.state.todos.map((todo, index) => {
                 return `${index + 1}) ${todo.title}`
@@ -195,8 +192,11 @@ export default {
             }
             this.loading = true
             this.shareMenu = false
-            axios.post(`${Api.host}/api/sendToEmail`, data, {
-                timeout: 5000
+            this.$http.post(`/sendToEmail`, data, {
+                timeout: 5000,
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
             })
             .then(response => {
                 this.message = 'SUCCESSFULLY SENT!'

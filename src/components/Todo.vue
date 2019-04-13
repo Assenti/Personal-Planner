@@ -67,8 +67,6 @@
 <script>
 import Item from '@/components/Item'
 import Total from '@/components/Total'
-import axios from 'axios'
-import Api from '@/services/ApiService'
 import Draggable from 'vuedraggable'
 import TodoSearch from '@/components/TodoSearch'
 import TodoDetails from '@/components/TodoDetails'
@@ -182,9 +180,13 @@ export default {
         getTodos() {
             if(this.$store.getters.loggedIn) {
                 this.loading = true
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-                axios.get(`${Api.host}/api/getTodos?userId=${this.$store.state.user._id}`,
-                {timeout: 5000 })
+                this.$http.get(`/getTodos?userId=${this.$store.state.user._id}`,
+                {
+                    timeout: 5000,
+                    headers: {
+                        Authorization: 'Bearer ' + this.$store.state.token
+                    } 
+                })
                 .then(response => {
                     this.todos = response.data.sort((a, b) => {return a.order - b.order})
                     this.$store.dispatch('setTodos', response.data)
@@ -208,9 +210,11 @@ export default {
         },
 
         removeTodo(id) {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            
-            axios.delete(`${Api.host}/api/deleteTodo?todoId=${id}`)
+            this.$http.delete(`/deleteTodo?todoId=${id}`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
+            })
             .then(reponse => {
                 this.todos = this.todos.filter(todo => {
                     return todo._id !== id
@@ -232,13 +236,16 @@ export default {
         },
 
         setUnsetCompleted(data) {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             let editingData = {
                 _id: data._id,
                 completed: data.completed
             }
 
-            axios.get(`${Api.host}/api/setUnsetCompleted?_id=${data._id}&completed=${data.completed}`)
+            this.$http.get(`/setUnsetCompleted?_id=${data._id}&completed=${data.completed}`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
+            })
             .then(response => {
                 console.log(response.data)
                 let index = this.todos.findIndex((todo) => todo._id == data._id)
@@ -255,8 +262,11 @@ export default {
         },
 
         setUnsetImportant(data) {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.get(`${Api.host}/api/setUnsetImportant?_id=${data._id}&important=${data.important}`)
+            this.$http.get(`/setUnsetImportant?_id=${data._id}&important=${data.important}`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
+            })
             .then(response => {
                 console.log(response.data)
                 let index = this.todos.findIndex((todo) => todo._id == data._id)
@@ -273,13 +283,16 @@ export default {
         },
 
         finishedEdit (data) {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             let editingData = {
                 _id: data._id,
                 title: data.title
             }
 
-            axios.put(`${Api.host}/api/editTodo`, editingData)
+            this.$http.put(`${Api.host}/api/editTodo`, editingData, {
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
+            })
             .then(response => {
                 console.log(response.data)
                 let index = this.todos.findIndex((todo) => todo._id == data._id)
@@ -300,9 +313,12 @@ export default {
         },
 
         deleteCompleted() {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.put(`${Api.host}/api/deleteCompleted`, {
+            this.$http.put(`${Api.host}/api/deleteCompleted`, {
                 todos: this.todos.filter(todo => todo.completed)
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
             })
             .then(response => {
                 this.todos = this.todos.filter(todo => !todo.completed)
@@ -341,7 +357,11 @@ export default {
                 }
             })
 
-            axios.post(`${Api.host}/api/setOrder`, { todos: todos })
+            this.$http.post(`/setOrder`, { todos: todos }, {
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
+            })
             .then(response => {
                 console.log(response.data)
             })

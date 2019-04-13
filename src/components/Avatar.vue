@@ -45,9 +45,7 @@
 </template>
 
 <script>
-import axios from 'axios'
 import path from 'path'
-import Api from '@/services/ApiService'
 import { bus } from '@/main'
 
 export default {
@@ -65,13 +63,16 @@ export default {
     methods: {
         changeAvatar () {
             if(this.file) {
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-
                 let data = new FormData()
                 data.append('userId', this.$store.state.user._id)
                 data.append('file', this.file)
                 
-                axios.post(`${Api.host}/api/setAvatar`, data, { timeout: 5000 })
+                this.$http.post(`/setAvatar`, data, { 
+                    timeout: 5000,
+                    headers: {
+                        Authorization: 'Bearer ' + this.$store.state.token
+                    } 
+                })
                 .then(response => {
                     this.$store.dispatch('setAvatar', response.data)
                     this.changing = false
@@ -104,8 +105,12 @@ export default {
         },
 
         deleteAvatar () {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.get(`${Api.host}/api/deleteAvatar?userId=${this.$store.state.user._id}&file=${this.$store.state.user.avatar}`)
+            this.$http.get(`/deleteAvatar?userId=${this.$store.state.user._id}&file=${this.$store.state.user.avatar}`,
+            {
+                headers: {
+                    Authorization: 'Bearer ' + this.$store.state.token
+                }
+            })
             .then(response => {
                 this.$store.dispatch('setAvatar', response.data)
                 this.changing = false
