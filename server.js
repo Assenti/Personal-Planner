@@ -6,6 +6,8 @@ const cors = require('cors')
 const morgan = require('morgan')
 const config = require('./server/config')
 const routes = require('./server/routes')
+const dotenv = require('dotenv')
+dotenv.config()
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, { useNewUrlParser: true })
 
