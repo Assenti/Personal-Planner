@@ -5,7 +5,8 @@
   "author": "Asset Sultanov <asset.sultan@gmail.com>",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.14",
