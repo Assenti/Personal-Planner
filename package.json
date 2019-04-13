@@ -1,15 +1,11 @@
 {
   "name": "planner",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "author": "Asset Sultanov <asset.sultan@gmail.com>",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "start": "node bin/dev",
-    "dev": "nodemon bin/dev",
-    "test:e2e": "vue-cli-service test:e2e",
-    "test:unit": "vue-cli-service test:unit"
+    "dev": "nodemon bin/dev"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.14",
