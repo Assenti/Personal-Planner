@@ -4,8 +4,8 @@
   "private": true,
   "author": "Asset Sultanov <asset.sultan@gmail.com>",
   "scripts": {
-    "start": "node bin/dev",
-    "dev": "nodemon bin/dev"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.14",
