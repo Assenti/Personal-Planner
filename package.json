@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {
@@ -14,7 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/vue-fontawesome": "^0.1.5",
     "animate.css": "^3.7.0",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "bulma": "^0.7.4",
@@ -25,7 +26,7 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
     "keygenerator": "^1.0.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "mongoose": "^5.4.11",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
