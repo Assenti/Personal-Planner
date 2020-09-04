@@ -47,7 +47,7 @@
     "@vue/cli-service": "^3.5.3",
     "acorn": "^6.1.0",
     "dotenv": "^6.2.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.18.10",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.8"
